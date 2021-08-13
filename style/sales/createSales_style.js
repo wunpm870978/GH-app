@@ -1,0 +1,132 @@
+/* eslint-disable prettier/prettier */
+import {StyleSheet, Dimensions} from 'react-native';
+const windowWidth = Dimensions.get('window').width;
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#D6EAF8',
+    alignItems: 'center',
+    //justifyContent: 'center',
+  },
+  viewContainer: {
+    flex: 1,
+    marginVertical: 20,
+    width: windowWidth - windowWidth * 0.08 - 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scroll: {
+    flex: 1,
+    width: '100%',
+    //backgroundColor: 'yellow',
+  },
+  btn: {
+    borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 10,
+    height: 50,
+    width: '100%',
+    borderColor: 'grey',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  productList: {
+    marginBottom: 10,
+    width: '100%',
+    borderColor: 'grey',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'grey',
+    fontSize: 18,
+  },
+  textInput: {
+    height: 50,
+    color: 'grey',
+    width: '80%',
+    fontSize: 18,
+  },
+  confirmBtnContainer: {
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  confirmBtn: {
+    borderWidth: 1,
+    borderRadius: 10,
+    height: 50,
+    width: '50%',
+    borderColor: '#00ff00',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  //<----------------------Modal--------------------------->
+  modalContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalView: {
+    height: 350,
+    paddingVertical: 20,
+    width: windowWidth - windowWidth * 0.08 - 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  modalTitleContainer: {
+    height: 30,
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalTextContainer: {
+    height: 30,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    //backgroundColor: 'green',
+    marginBottom: 1,
+  },
+  modalTextLeftPanel: {
+    flex: 3.5,
+    alignItems: 'flex-end',
+    paddingRight: 10,
+    //justifyContent: 'center',
+    //backgroundColor: 'cyan',
+  },
+  modalTextRightPanel: {
+    flex: 6.5,
+    //alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    // backgroundColor: 'orange',
+  },
+  modalBtnContainer: {
+    marginTop: 10,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalBtn: {
+    borderRadius: 5,
+    height: 30,
+    width: 70,
+    backgroundColor: 'yellow',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
+  },
+  modalTitle: {
+    color: 'grey',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
