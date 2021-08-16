@@ -74,7 +74,7 @@ export function QRScanScreen({route, navigation}) {
           <Ionicons
             name="search"
             size={25}
-            style={styles.icon}
+            style={[styles.icon, {color: '#EA5E2A'}]}
             onPress={() => {
               //null
             }}

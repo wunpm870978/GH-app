@@ -55,7 +55,7 @@ export function SuccessScreen({route, navigation}) {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
     //paddingVertical: windowWidth * 0.92,
   },

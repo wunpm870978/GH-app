@@ -316,7 +316,7 @@ export function DisplayInventoryScreen({route, navigation}) {
                   staffData: staffData,
                 });
               }}>
-              <Text>查看調貨籃</Text>
+              <Text style={{color: 'white'}}>查看調貨籃</Text>
             </TouchableOpacity>
             <View style={{height: 1, width: '100%', marginBottom: 10}} />
           </View>
@@ -443,15 +443,13 @@ export function DisplayInventoryScreen({route, navigation}) {
                   編號： {productInfo.productID}
                 </Text>
               </View>
-              <View style={styles.copyBtnContainer}>
-                <TouchableOpacity
-                  style={styles.copyBtn}
-                  onPress={() => {
-                    Clipboard.setString(productInfo.productID);
-                  }}>
-                  <Text style={{fontSize: 16, color: '#F1948A'}}>複製</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={styles.copyBtnContainer}
+                onPress={() => {
+                  Clipboard.setString(productInfo.productID);
+                }}>
+                <Text style={{fontSize: 16, color: 'white'}}>複製</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.productTextContainer}>
               <Text style={styles.productText}>單價： {productInfo.price}</Text>
@@ -518,8 +516,8 @@ export function DisplayInventoryScreen({route, navigation}) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
+              <Text style={styles.modalTitle}>{staffData.district}</Text>
               <Text style={styles.modalTitle}>{currentItem.shop}</Text>
-              <Text style={styles.modalTitle}>{currentItem.district}</Text>
             </View>
             <View style={{borderWidth: 0.5, width: 250}} />
             <View
@@ -549,7 +547,7 @@ export function DisplayInventoryScreen({route, navigation}) {
                 onPress={() => {
                   toggleDiliveryTime();
                 }}>
-                <Text>
+                <Text style={styles.modalText}>
                   {currentItem.deliveryDate} {currentItem.deliveryTime}
                 </Text>
               </TouchableOpacity>
@@ -573,7 +571,7 @@ export function DisplayInventoryScreen({route, navigation}) {
                     setModalVisible(!modalVisible);
                   }
                 }}>
-                <Text>加入調貨籃</Text>
+                <Text style={styles.modalText}>加入調貨籃</Text>
               </TouchableOpacity>
             </View>
           </View>

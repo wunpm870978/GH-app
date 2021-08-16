@@ -213,7 +213,7 @@ export function CartInventoryScreen({route, navigation}) {
               console.log(staffData);
               navigation.navigate('Home');
             }}>
-            <Text style={{fontSize: 18}}>確認更改</Text>
+            <Text style={{fontSize: 18, color: 'white'}}>確認更改</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -246,8 +246,8 @@ export function CartInventoryScreen({route, navigation}) {
               />
             </View>
             <View style={styles.modalTitleContainer}>
+              <Text style={styles.modalTitle}>{staffData.district}</Text>
               <Text style={styles.modalTitle}>{currentItem.shop}</Text>
-              <Text style={styles.modalTitle}>{currentItem.district}</Text>
             </View>
             <View style={{borderWidth: 0.5, width: 250}} />
             <View style={styles.modalProductContainer}>
@@ -276,7 +276,7 @@ export function CartInventoryScreen({route, navigation}) {
                 onPress={() => {
                   toggleDiliveryTime();
                 }}>
-                <Text>
+                <Text style={{color: 'white'}}>
                   {currentItem.deliveryDate} {currentItem.deliveryTime}
                 </Text>
               </TouchableOpacity>
@@ -316,7 +316,9 @@ export function CartInventoryScreen({route, navigation}) {
                     setModalVisible(!modalVisible);
                   }
                 }}>
-                <Text>{toggleEdit ? '更改調貨籃' : '刪除調貨欄'}</Text>
+                <Text style={{color: 'white'}}>
+                  {toggleEdit ? '更改調貨籃' : '刪除調貨欄'}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

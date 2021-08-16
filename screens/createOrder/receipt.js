@@ -157,7 +157,7 @@ export function ReceiptScreen({route, navigation}) {
             onPress={() => {
               navigation.push('Home');
             }}>
-            <Text style={{fontSize: 20}}>確認</Text>
+            <Text style={{fontSize: 20, color: 'white'}}>確認</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

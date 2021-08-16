@@ -4,7 +4,7 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
   },
   container: {
@@ -47,7 +47,7 @@ export default StyleSheet.create({
     width: windowWidth * 0.25,
     height: windowWidth * 0.25,
     borderWidth: 1,
-    backgroundColor: 'white',
+    //backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },

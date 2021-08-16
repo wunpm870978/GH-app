@@ -144,7 +144,7 @@ export function MallMainScreen({route, navigation}) {
       <View style={styles.filerContainer}>
         <View style={styles.leftContainer}>
           <View style={styles.categoryLeftContainer}>
-            <Text style={{fontSize: 15}}>推薦分類</Text>
+            <Text style={{fontSize: 15, color: 'white'}}>推薦分類</Text>
           </View>
           <FlatList
             style={{width: '100%'}}

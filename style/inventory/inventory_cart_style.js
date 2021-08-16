@@ -6,7 +6,7 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
   },
   container: {
@@ -40,7 +40,8 @@ export default StyleSheet.create({
   },
   confirmBtn: {
     width: '50%',
-    borderWidth: 1,
+    //borderWidth: 1,
+    backgroundColor: '#A9CA81',
     borderRadius: 10,
     height: 50,
     alignItems: 'center',
@@ -49,11 +50,12 @@ export default StyleSheet.create({
   //---------------renderItem-----------//
   renderItemContainer: {
     width: windowWidth - windowWidth * 0.08 - 30,
-    backgroundColor: 'yellow',
+    //backgroundColor: 'yellow',
     margin: 10,
     padding: 10,
     borderRadius: 10,
     borderWidth: 1,
+    borderColor: '#D3D0D0',
   },
   //---------------Modal---------------//
   modalContainer: {
@@ -77,13 +79,11 @@ export default StyleSheet.create({
     marginHorizontal: 10,
   },
   modalDate: {
-    borderWidth: 1,
     borderRadius: 10,
     marginTop: 10,
     height: 50,
     width: 240,
-    borderColor: '#00FF00',
-    //backgroundColor: '#00FF00',
+    backgroundColor: '#A9CA81',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

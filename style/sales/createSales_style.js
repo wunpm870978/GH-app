@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
     //justifyContent: 'center',
   },
@@ -40,12 +40,12 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'grey',
+    color: '#707070',
     fontSize: 18,
   },
   textInput: {
     height: 50,
-    color: 'grey',
+    color: '#707070',
     width: '80%',
     fontSize: 18,
   },
@@ -57,15 +57,22 @@ export default StyleSheet.create({
     marginTop: 20,
   },
   confirmBtn: {
-    borderWidth: 1,
     borderRadius: 10,
     height: 50,
     width: '50%',
-    borderColor: '#00ff00',
+    //borderColor: '#00ff00',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#A9CA81',
+  },
+  addBtn: {
+    backgroundColor: '#A9CA81',
+    width: 30,
+    height: 30,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   //<----------------------Modal--------------------------->
   modalContainer: {
@@ -81,6 +88,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
+    borderColor: '#D3D0D0',
+    borderWidth: 1,
   },
   modalTitleContainer: {
     height: 30,
@@ -119,10 +128,13 @@ export default StyleSheet.create({
     borderRadius: 5,
     height: 30,
     width: 70,
-    backgroundColor: 'yellow',
+    backgroundColor: '#A9CA81',
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 20,
+  },
+  modalText: {
+    color: 'white',
   },
   modalTitle: {
     color: 'grey',

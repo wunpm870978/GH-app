@@ -4,7 +4,7 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
   },
   container: {
@@ -47,7 +47,8 @@ export default StyleSheet.create({
     width: windowWidth * 0.25,
     height: windowWidth * 0.25,
     borderWidth: 1,
-    backgroundColor: 'white',
+    borderColor: '#D3D0D0',
+    //backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -76,18 +77,10 @@ export default StyleSheet.create({
   copyBtnContainer: {
     height: 25, //30
     width: 70,
-    //backgroundColor: 'orange',
+    backgroundColor: '#A9CA81',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
     borderRadius: 5,
-    borderColor: '#F1948A',
-  },
-  copyBtn: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   productTextContainer: {
     height: 25,
@@ -146,13 +139,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   sendBtn: {
-    borderWidth: 1,
     borderRadius: 10,
     marginTop: 10,
     height: 50,
     width: '100%',
-    borderColor: '#00FF00',
-    //backgroundColor: '#00FF00',
+    backgroundColor: '#A9CA81',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -179,15 +170,16 @@ export default StyleSheet.create({
     marginHorizontal: 10,
   },
   modalDate: {
-    borderWidth: 1,
     borderRadius: 10,
     marginTop: 10,
     height: 50,
     width: 240,
-    borderColor: '#00FF00',
-    //backgroundColor: '#00FF00',
+    backgroundColor: '#A9CA81',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  modalText: {
+    color: 'white',
   },
 });

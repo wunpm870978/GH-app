@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
   },
   container: {
@@ -18,19 +18,17 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   btn: {
-    borderWidth: 1,
     borderRadius: 10,
     marginVertical: 20,
     height: 50,
     width: '60%',
-    borderColor: '#00FF00',
-    //backgroundColor: '#00FF00',
+    backgroundColor: '#A9CA81',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    color: '#00ff00',
+    color: 'white',
     fontSize: 18,
   },
 });

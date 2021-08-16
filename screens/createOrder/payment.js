@@ -237,11 +237,7 @@ export function PaymentScreen({route, navigation}) {
           />
         </View>
         <View style={styles.photoPickerContainer}>
-          <MaterialIcons
-            name="add-a-photo"
-            size={30}
-            color="black"
-            style={{marginHorizontal: 10}}
+          <TouchableOpacity
             onPress={() => {
               //navigation.push('Camera');
               const options = {
@@ -250,21 +246,31 @@ export function PaymentScreen({route, navigation}) {
                 saveToPhotos: true,
               };
               launchCamera(options, setResponse);
-            }}
-          />
-          <MaterialIcons
-            name="add-photo-alternate"
-            size={30}
-            color="black"
-            style={{marginHorizontal: 10}}
+            }}>
+            <MaterialIcons
+              name="add-a-photo"
+              size={30}
+              color="black"
+              style={{marginHorizontal: 10}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => {
               //navigation.push('Camera');
               const options = {
                 mediaType: 'photo',
+                cameraType: 'back',
+                saveToPhotos: true,
               };
               launchImageLibrary(options, setResponse);
-            }}
-          />
+            }}>
+            <MaterialIcons
+              name="add-photo-alternate"
+              size={30}
+              color="black"
+              style={{marginHorizontal: 10}}
+            />
+          </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text>
@@ -287,7 +293,7 @@ export function PaymentScreen({route, navigation}) {
               // console.log(staffData);
               upload();
             }}>
-            <Text style={{fontSize: 18}}>上傳記錄</Text>
+            <Text style={{fontSize: 18, color: 'white'}}>上傳記錄</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -298,18 +304,36 @@ export function PaymentScreen({route, navigation}) {
     <View style={styles.mainContainer}>
       <View style={styles.toggleContainer}>
         <TouchableOpacity
-          style={[styles.toggleBtn, {backgroundColor: 'orange'}]}
+          style={[
+            styles.toggleBtn,
+            {backgroundColor: togglePanel ? 'white' : '#A9CA81'},
+          ]}
           onPress={() => {
             setTogglePanel(false);
           }}>
-          <Text>貨品列表</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: togglePanel ? '#707070' : 'white',
+            }}>
+            貨品列表
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.toggleBtn}
+          style={[
+            styles.toggleBtn,
+            {backgroundColor: togglePanel ? '#A9CA81' : 'white'},
+          ]}
           onPress={() => {
             setTogglePanel(true);
           }}>
-          <Text>付款上傳</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: togglePanel ? 'white' : '#707070',
+            }}>
+            付款上傳
+          </Text>
         </TouchableOpacity>
       </View>
       {togglePanel ? pay() : list()}

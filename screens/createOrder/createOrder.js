@@ -296,7 +296,7 @@ export function createOrderScreen({route, navigation}) {
                 <MaterialCommunityIcons
                   name="qrcode-scan"
                   size={70}
-                  color="#F1948A"
+                  color="#EA5E2A"
                 />
               </TouchableOpacity>
             </View>
@@ -309,17 +309,14 @@ export function createOrderScreen({route, navigation}) {
               <AntDesign name="shoppingcart" color="#EA5E2A" size={30} />
               <Text style={styles.textTitle}>貨品列表</Text>
             </View>
-            <View style={styles.cartContainer1}>
-              <Ionicons
-                name="barcode-outline"
-                size={25}
-                color="white"
-                onPress={() => {
-                  navigation.push('FindPorduct');
-                }}
-              />
+            <TouchableOpacity
+              style={styles.cartContainer1}
+              onPress={() => {
+                navigation.push('FindPorduct');
+              }}>
+              <Ionicons name="barcode-outline" size={25} color="white" />
               <Text style={styles.textTitle1}>掃描條碼</Text>
-            </View>
+            </TouchableOpacity>
             <View style={{flex: 0.5}} />
           </View>
           <View

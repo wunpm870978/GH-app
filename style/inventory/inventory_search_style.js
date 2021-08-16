@@ -4,7 +4,7 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
   },
   container: {
@@ -33,9 +33,8 @@ export default StyleSheet.create({
     marginTop: 100,
     height: 60,
     width: '60%',
-    borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#00ff00',
+    backgroundColor: '#A9CA81',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -43,13 +42,13 @@ export default StyleSheet.create({
     marginTop: 20,
     height: 60,
     width: '60%',
-    borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#00ff00',
+    backgroundColor: '#A9CA81',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
     fontSize: 18,
+    color: 'white',
   },
 });

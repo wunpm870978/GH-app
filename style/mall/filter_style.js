@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
     //paddingVertical: windowWidth * 0.92,
   },
@@ -23,7 +23,7 @@ export default StyleSheet.create({
   leftContainer: {
     flex: 2.5,
     height: '100%',
-    backgroundColor: 'yellow',
+    //backgroundColor: 'yellow',
     alignItems: 'center',
   },
   rightContainer: {
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    //backgroundColor: 'grey',
+    backgroundColor: '#A9CA81',
   },
   categoryRightContainer: {
     flex: 1,
@@ -49,10 +49,12 @@ export default StyleSheet.create({
     width: (((windowWidth * 7) / 10) * 1) / 3 - 10,
     marginHorizontal: 5,
     height: (((windowWidth * 7) / 10) * 1) / 3 + 20,
-    backgroundColor: 'orange',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 5,
+    borderWidth: 2,
+    borderColor: '#A9CA81',
   },
   btnFlatList: {
     //backgroundColor: 'purple',

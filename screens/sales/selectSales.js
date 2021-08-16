@@ -37,7 +37,7 @@ export function SelectSalesScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -47,19 +47,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btn: {
-    borderWidth: 1,
     borderRadius: 10,
     marginTop: 10,
     height: 50,
     width: '100%',
-    borderColor: 'grey',
-    //backgroundColor: '#00FF00',
+    backgroundColor: '#A9CA81',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    color: 'grey',
+    color: 'white',
     fontSize: 18,
   },
 });

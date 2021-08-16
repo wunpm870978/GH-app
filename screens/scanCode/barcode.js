@@ -132,7 +132,7 @@ export function BarcodeScanScreen({navigation}) {
         <Item style={{marginBottom: 5}}>
           <Ionicons
             name="barcode-outline"
-            size={20}
+            size={25}
             style={styles.icon}
             onPress={() => {
               console.log(barcodeData.barcode);
@@ -146,7 +146,7 @@ export function BarcodeScanScreen({navigation}) {
           <Ionicons
             name="search"
             size={25}
-            style={styles.icon}
+            style={[styles.icon, {color: '#EA5E2A'}]}
             onPress={() => {
               apiHandle();
             }}

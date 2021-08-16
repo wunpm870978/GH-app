@@ -335,16 +335,19 @@ export function CreateSalesScreen({navigation}) {
               value={salesData.productID}
               onChangeText={val => handleItemChange(val)}
             />
-            <MaterialIcons
-              name="add-circle-outline"
-              size={25}
-              color="black"
+            <TouchableOpacity
+              style={styles.addBtn}
               onPress={() => {
                 if (salesData.productID !== '') {
                   getProductInfo();
                 }
-              }}
-            />
+              }}>
+              <MaterialIcons
+                name="add-circle-outline"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.productList}>
             {productList.length === 0 ? (
@@ -380,7 +383,7 @@ export function CreateSalesScreen({navigation}) {
               <MaterialIcons
                 name="add-a-photo"
                 size={25}
-                color="black"
+                color="#A9CA81"
                 style={{marginHorizontal: 5}}
                 onPress={() => {
                   const options = {
@@ -394,7 +397,7 @@ export function CreateSalesScreen({navigation}) {
               <MaterialIcons
                 name="add-photo-alternate"
                 size={25}
-                color="black"
+                color="#A9CA81"
                 style={{marginRight: 10}}
                 onPress={() => {
                   const options = {
@@ -484,7 +487,7 @@ export function CreateSalesScreen({navigation}) {
                   <TouchableOpacity
                     style={styles.modalBtn}
                     onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={styles.textStyle}>取消</Text>
+                    <Text style={styles.modalText}>取消</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.modalBtn}
@@ -492,7 +495,7 @@ export function CreateSalesScreen({navigation}) {
                       setModalVisible(!modalVisible);
                       createRecord();
                     }}>
-                    <Text style={styles.textStyle}>新增</Text>
+                    <Text style={styles.modalText}>新增</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -506,7 +509,7 @@ export function CreateSalesScreen({navigation}) {
               }}>
               <Text
                 style={{
-                  color: '#00ff00',
+                  color: 'white',
                   fontSize: 18,
                 }}>
                 確認

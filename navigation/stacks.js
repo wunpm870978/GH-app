@@ -69,8 +69,9 @@ export const HomeStackNavigator = () => {
         options={{
           title: 'QR code',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -79,8 +80,9 @@ export const HomeStackNavigator = () => {
         options={{
           title: 'Barcode',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -118,8 +120,9 @@ export const MallStackNavigator = () => {
           //headerLeft: <View></View>,
           headerRight: () => <View />,
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
           headerTitleStyle: {textAlign: 'center', alignSelf: 'center'},
         }}
       />
@@ -130,8 +133,9 @@ export const MallStackNavigator = () => {
           title: '貨品列表',
           headerRight: () => <View />,
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
           headerTitleStyle: {textAlign: 'center', alignSelf: 'center'},
         }}
       />
@@ -160,8 +164,9 @@ export const OrderStackNavigator = () => {
         options={{
           title: '付款',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -170,8 +175,9 @@ export const OrderStackNavigator = () => {
         options={{
           title: '收據',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -180,8 +186,9 @@ export const OrderStackNavigator = () => {
         options={{
           title: 'QR code',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -190,8 +197,9 @@ export const OrderStackNavigator = () => {
         options={{
           title: '搜查貨品',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
     </Stack.Navigator>
@@ -208,8 +216,9 @@ export const DiscountStackNavigator = () => {
           //headerLeft: <View></View>,
           //headerRight: () => <View />,
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
           //headerTitleStyle: {textAlign: 'center', alignSelf: 'center'},
         }}
       />
@@ -221,8 +230,9 @@ export const DiscountStackNavigator = () => {
           //headerLeft: <View></View>,
           headerRight: () => <View />,
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
           headerTitleStyle: {textAlign: 'center', alignSelf: 'center'},
         }}
       />
@@ -238,8 +248,9 @@ export const InventoryStackNavigator = () => {
         options={{
           title: '查詢倉庫',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -248,8 +259,9 @@ export const InventoryStackNavigator = () => {
         options={{
           title: 'Barcode',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -258,8 +270,9 @@ export const InventoryStackNavigator = () => {
         options={{
           title: '貨品資料',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -268,8 +281,9 @@ export const InventoryStackNavigator = () => {
         options={{
           title: '倉庫',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -278,8 +292,9 @@ export const InventoryStackNavigator = () => {
         options={{
           title: '調貨籃',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
     </Stack.Navigator>
@@ -294,8 +309,9 @@ export const CompanyNewsStackNavigator = () => {
         options={{
           title: '公司消息',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -304,8 +320,9 @@ export const CompanyNewsStackNavigator = () => {
         options={{
           title: '消息詳細',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
     </Stack.Navigator>
@@ -320,8 +337,9 @@ export const SalesStackNavigator = () => {
         options={{
           title: '營業額',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -330,8 +348,9 @@ export const SalesStackNavigator = () => {
         options={{
           title: '新增本期營業額',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -345,8 +364,9 @@ export const SalesStackNavigator = () => {
         options={{
           title: '查看營業額',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen
@@ -355,8 +375,9 @@ export const SalesStackNavigator = () => {
         options={{
           title: '營業額數據',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
     </Stack.Navigator>

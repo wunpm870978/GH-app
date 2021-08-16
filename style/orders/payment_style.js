@@ -6,14 +6,14 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
   },
   toggleContainer: {
     flexDirection: 'row',
     width: '100%',
     height: 50,
-    backgroundColor: 'yellow',
+    backgroundColor: 'white',
   },
   scroll: {
     flex: 1,
@@ -57,10 +57,10 @@ export default StyleSheet.create({
     marginVertical: 10,
     width: '30%',
     height: 40,
-    borderWidth: 1,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#A9CA81',
   },
   //------------render-----------------//
   renderMainContainer: {
