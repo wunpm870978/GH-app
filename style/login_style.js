@@ -6,7 +6,7 @@ const windowHeight = Dimensions.get('window').height;
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#DDFCFF',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     flex: 4,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   bottomContainer: {
     flex: 6,
@@ -34,54 +34,28 @@ export default StyleSheet.create({
     height: '100%',
     resizeMode: 'contain',
   },
-  toggleView: {
-    width: '60%',
+  toggleContainer: {
+    width: '80%',
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  toggleLeft: {
-    width: '50%',
+  toggleBtn: {
+    flex: 1,
     height: 50,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-  },
-  toggleRight: {
-    width: '50%',
-    height: 50,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-  },
-  toggleButton: {
-    width: '100%',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  toggleButtonFalse: {
-    width: '100%',
-    borderRadius: 20,
-    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   inputView: {
-    width: '80%',
+    width: '100%',
     backgroundColor: 'white',
-    borderRadius: 15,
     marginBottom: Math.round(windowHeight * 0.0234375),
     justifyContent: 'center',
     padding: 10,
   },
   loginBtn: {
     width: '60%',
-    backgroundColor: '#fb5b5a',
+    backgroundColor: '#A9CA81',
     borderRadius: 25,
     height: 50,
     alignItems: 'center',
@@ -90,6 +64,7 @@ export default StyleSheet.create({
     marginBottom: Math.round(windowHeight * 0.015625),
   },
   row: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
   },

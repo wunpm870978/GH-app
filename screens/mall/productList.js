@@ -49,7 +49,7 @@ export function ProductListScreen({route, navigation}) {
     <View style={styles.mainContainer}>
       <FlatList
         style={{width: '100%'}}
-        keyExtractor={item => String(item.wCode)}
+        keyExtractor={item => String(item.cCode)}
         data={productList}
         renderItem={renderItem}
         showsHorizontalScrollIndicator={false}

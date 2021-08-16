@@ -200,16 +200,16 @@ export function createOrderScreen({route, navigation}) {
     if (pay === '') {
       setIsSelectPayment(false);
     }
-    if (delivery === '') {
+    /* if (delivery === '') {
       setIsSelectDelivery(false);
-    }
+    } */
     if (discountType === '') {
       setIsSelectDiscountCode(false);
     }
     if (
       goods.length === 0 ||
       pay === '' ||
-      delivery === '' ||
+      //delivery === '' ||
       discountType === ''
     ) {
       Alert.alert('注意！', '資料不能漏空！');
@@ -254,465 +254,445 @@ export function createOrderScreen({route, navigation}) {
   return (
     <View style={styles.container}>
       {/* panel InputView edit---------------------------------------------------- */}
-      <View style={styles.infoPanel}>
-        <ScrollView
-          style={styles.scroll}
-          showsVerticalScrollIndicator={false}
-          nestedScrollEnabled={true}>
-          <View style={styles.containInputView}>
-            {/* member info edit---------------------------------------------------- */}
-            <View style={styles.infoColumn}>
-              <View style={styles.infoRow}>
-                <Ionicons name="menu" size={25} />
-                <Text style={styles.text}>會員資料</Text>
-              </View>
-              <View style={styles.memberInfoRow}>
-                <View style={styles.memberInfoColumn}>
-                  <View style={styles.inputView}>
-                    <TextInput
-                      style={{height: 50, color: 'black', width: '100%'}}
-                      placeholder="電話號碼..."
-                      placeholderTextColor="#003f5c"
-                      value={memCheck.phoneNo}
-                      onChangeText={val => handlePhoneNoChange(val)}
-                    />
-                  </View>
-                  <View style={styles.inputView}>
-                    <TextInput
-                      style={{height: 50, color: 'black', width: '100%'}}
-                      placeholder="Email..."
-                      placeholderTextColor="#003f5c"
-                      value={memCheck.email}
-                      onChangeText={val => handleEmailChange(val)}
-                    />
-                  </View>
-                  <View style={styles.inputView}>
-                    <TextInput
-                      style={{height: 50, color: 'black', width: '100%'}}
-                      placeholder="會員號碼..."
-                      placeholderTextColor="#003f5c"
-                      value={memCheck.memberId}
-                      onChangeText={val => handleMemberIdChange(val)}
-                    />
-                  </View>
-                </View>
-                <TouchableOpacity
-                  style={styles.QRcodeColumn}
-                  onPress={() => navigation.push('QRVendor')}>
-                  <MaterialCommunityIcons
-                    name="qrcode-scan"
-                    size={80}
-                    color="#F1948A"
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-            {/* Selected goods edit---------------------------------------------------- */}
-            <View style={styles.infoColumn}>
-              <View style={styles.infoRow}>
-                <AntDesign name="shoppingcart" size={30} />
-                <Text style={styles.text}>貨品列表</Text>
-              </View>
-              <View
-                style={{
-                  paddingVertical: 5,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '100%',
-                  height: 35,
-                }}>
-                <View style={{flexDirection: 'row', flex: 5.5}}>
-                  <Text>名稱</Text>
-                  <Ionicons
-                    name="ios-cart"
-                    size={25}
-                    color="#F1948A"
-                    onPress={() => {
-                      console.log(productList);
-                      console.log(productList.length);
-                      let tempPrice = 0;
-                      productList.map(element => {
-                        tempPrice += element.price * element.quantity;
-                      });
-                      console.log(tempPrice);
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 2,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text>數量</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row-reverse',
-                    flex: 2.5,
-                  }}>
-                  <Ionicons
-                    name="barcode-outline"
-                    size={25}
-                    style={{marginRight: 10}}
-                    color="#F1948A"
-                    onPress={() => {
-                      navigation.push('FindPorduct');
-                    }}
-                  />
-                </View>
-              </View>
-              <View
-                style={{borderWidth: 0.5, width: '100%', marginBottom: 10}}
-              />
-              <View
-                style={{
-                  width: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                {productList.length === 0 ? (
-                  <Text style={{marginBottom: 10}}>購物籃尚未有任何貨品！</Text>
-                ) : (
-                  renderItem
-                )}
-              </View>
-              <View
-                style={{borderWidth: 0.5, width: '100%', marginBottom: 10}}
-              />
-              {productList.length === 0 ? null : (
-                <View
-                  style={{
-                    width: '100%',
-                    height: 40,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Ionicons
-                      name="ios-calculator"
-                      size={25}
-                      style={{marginRight: 10}}
-                      color="#F1948A"
-                    />
-                    <Text>總價錢</Text>
-                  </View>
-                  <Text style={{marginRight: 20}}>$ {totalPrice}</Text>
-                </View>
-              )}
-            </View>
-            {/* Payment edit---------------------------------------------------- */}
-            <View style={styles.infoColumn}>
-              <View style={styles.infoRow}>
-                <MaterialIcons name="payment" size={30} />
-                <Text style={styles.text}>付款方式</Text>
-              </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>AliPay</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      paymentMethod: 'Aliselect',
-                    });
-                    setIsSelectPayment(true);
-                  }}>
-                  {check.paymentMethod === 'Aliselect' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>WeChat Pay</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      paymentMethod: 'Wechatselect',
-                    });
-                    setIsSelectPayment(true);
-                  }}>
-                  {check.paymentMethod === 'Wechatselect' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>現金/八達通</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      paymentMethod: 'Cashselect',
-                    });
-                    setIsSelectPayment(true);
-                  }}>
-                  {check.paymentMethod === 'Cashselect' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>VISA</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      paymentMethod: 'VISAselect',
-                    });
-                    setIsSelectPayment(true);
-                  }}>
-                  {check.paymentMethod === 'VISAselect' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              {isSelectPayment ? null : (
-                <Text style={styles.warnText}>付款方式不能為空！</Text>
-              )}
-            </View>
-            {/* Delivery edit---------------------------------------------------- */}
-            <View style={styles.infoColumn}>
-              <View style={styles.infoRow}>
-                <MaterialCommunityIcons
-                  name="truck-delivery-outline"
-                  size={30}
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+        {/* member info edit---------------------------------------------------- */}
+        <View style={styles.infoColumn}>
+          <View style={styles.infoRow}>
+            <Ionicons name="menu" color="#EA5E2A" size={25} />
+            <Text style={styles.textTitle}>會員資料</Text>
+          </View>
+          <View style={styles.memberInfoRow}>
+            <View style={styles.memberInfoColumn}>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="電話號碼..."
+                  placeholderTextColor="#707070"
+                  value={memCheck.phoneNo}
+                  onChangeText={val => handlePhoneNoChange(val)}
                 />
-                <Text style={styles.text}>領取方法</Text>
               </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>現場領取</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      deliveryMethod: 'LiveTake',
-                    });
-                    setIsSelectDelivery(true);
-                  }}>
-                  {check.deliveryMethod === 'LiveTake' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="Email..."
+                  placeholderTextColor="#707070"
+                  value={memCheck.email}
+                  onChangeText={val => handleEmailChange(val)}
+                />
               </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>本地分店</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      deliveryMethod: 'Local',
-                    });
-                    setIsSelectDelivery(true);
-                  }}>
-                  {check.deliveryMethod === 'Local' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>外地分店</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      deliveryMethod: 'Others',
-                    });
-                    setIsSelectDelivery(true);
-                  }}>
-                  {check.deliveryMethod === 'Others' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              {isSelectDelivery ? null : (
-                <Text style={styles.warnText}>領取方式不能為空！</Text>
-              )}
-            </View>
-            {/* Discount code edit---------------------------------------------------- */}
-            <View style={styles.infoColumn}>
-              <View style={styles.infoRow}>
-                <Ionicons name="code-outline" size={30} />
-                <Text style={styles.text}>優惠</Text>
-              </View>
-              <View style={styles.itemRow}>
-                <View style={styles.membershipInputView}>
-                  <TextInput
-                    style={{height: 40, color: 'black', width: '100%'}}
-                    placeholder="會員號碼..."
-                    placeholderTextColor="#003f5c"
-                    value={check.memberId}
-                    onChangeText={val => handleMemberIdChange(val)}
-                  />
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      discountType: 'member',
-                    });
-                    setIsSelectDiscountCode(true);
-                  }}>
-                  {check.discountType === 'member' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemRow}>
-                <View style={styles.membershipInputView}>
-                  <TextInput
-                    style={{height: 40, color: 'black', width: '100%'}}
-                    placeholder="優惠碼..."
-                    placeholderTextColor="#003f5c"
-                    value={promotionCode}
-                    onChangeText={val => handlePromotionCodeChange(val)}
-                  />
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      discountType: 'promotion',
-                    });
-                    setIsSelectDiscountCode(true);
-                  }}>
-                  {check.discountType === 'promotion' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemRow}>
-                <Text style={styles.text}>暫未提供</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setCheck({
-                      ...check,
-                      discountType: 'none',
-                    });
-                    setIsSelectDiscountCode(true);
-                  }}>
-                  {check.discountType === 'none' ? (
-                    <MaterialCommunityIcons
-                      name="record-circle-outline"
-                      size={20}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons name="circle-outline" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              {isSelectDiscountCode ? null : (
-                <Text style={styles.warnText}>優惠選項不能為空！</Text>
-              )}
-            </View>
-            {/* Shop staff Column edit------------------------------------------- */}
-            <View style={styles.infoColumn}>
-              <View style={styles.itemRow}>
-                <View style={styles.detailRow}>
-                  <Ionicons name="md-person-circle-sharp" size={25} />
-                  <Text style={styles.text}>職員編號</Text>
-                </View>
-                <Text style={styles.text}>{staffData.staffID}</Text>
-              </View>
-              <View style={styles.itemRow}>
-                <View style={styles.detailRow}>
-                  <Entypo name="shop" size={25} />
-                  <Text style={styles.text}>分店編號</Text>
-                </View>
-                <Text style={styles.text}>{staffData.shopID}</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="會員號碼..."
+                  placeholderTextColor="#707070"
+                  value={memCheck.memberId}
+                  onChangeText={val => handleMemberIdChange(val)}
+                />
               </View>
             </View>
-            {/* Comfirm button edit------------------------------------------- */}
-            <View style={styles.infoColumn}>
-              <View style={styles.itemRow}>
-                <TouchableOpacity
-                  style={styles.confirmButton}
-                  onPress={() => {
-                    Alert.alert(
-                      '注意！',
-                      '訂單資料會被註銷，是否確定返回主頁面？',
-                      [
-                        {
-                          text: '取消',
-                          onPress: () => null,
-                          style: 'cancel',
-                        },
-                        {
-                          text: '確定',
-                          onPress: () => {
-                            navigation.push('Home');
-                          },
-                        },
-                      ],
-                    );
-                  }}>
-                  <Text>取消</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.confirmButton}
-                  onPress={() => {
-                    emptySelectHandle(
-                      productList,
-                      check.paymentMethod,
-                      check.deliveryMethod,
-                      check.discountType,
-                    );
-                    // console.log(promotionCode);
-                    // console.log(productList);
-                  }}>
-                  <Text>確認</Text>
-                </TouchableOpacity>
-              </View>
+            <View style={styles.QRcodeColumn}>
+              <TouchableOpacity onPress={() => navigation.push('QRVendor')}>
+                <MaterialCommunityIcons
+                  name="qrcode-scan"
+                  size={70}
+                  color="#F1948A"
+                />
+              </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+        {/* Selected goods edit---------------------------------------------------- */}
+        <View style={styles.infoColumn}>
+          <View style={{flexDirection: 'row', width: '100%'}}>
+            <View style={styles.cartContainer}>
+              <AntDesign name="shoppingcart" color="#EA5E2A" size={30} />
+              <Text style={styles.textTitle}>貨品列表</Text>
+            </View>
+            <View style={styles.cartContainer1}>
+              <Ionicons
+                name="barcode-outline"
+                size={25}
+                color="white"
+                onPress={() => {
+                  navigation.push('FindPorduct');
+                }}
+              />
+              <Text style={styles.textTitle1}>掃描條碼</Text>
+            </View>
+            <View style={{flex: 0.5}} />
+          </View>
+          <View
+            style={{
+              paddingVertical: 5,
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              height: 35,
+            }}>
+            <View style={{flexDirection: 'row', flex: 5.5}}>
+              <Text style={styles.text}>名稱</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                flex: 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={styles.text}>數量</Text>
+            </View>
+            <View style={{flexDirection: 'row-reverse', flex: 2.5}} />
+          </View>
+          <View style={styles.borderLine} />
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            {productList.length === 0 ? (
+              <Text style={{color: '#707070', marginBottom: 10}}>
+                購物籃尚未有任何貨品！
+              </Text>
+            ) : (
+              renderItem
+            )}
+          </View>
+          <View style={styles.borderLine} />
+          {productList.length === 0 ? null : (
+            <View
+              style={{
+                width: '100%',
+                height: 40,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <Ionicons
+                  name="ios-calculator"
+                  size={25}
+                  style={{marginRight: 10}}
+                  color="#F1948A"
+                />
+                <Text>總價錢</Text>
+              </View>
+              <Text style={{marginRight: 20}}>$ {totalPrice}</Text>
+            </View>
+          )}
+        </View>
+        {/* Payment edit---------------------------------------------------- */}
+        <View style={styles.infoColumn}>
+          <View style={styles.infoRow}>
+            <MaterialIcons name="payment" color="#EA5E2A" size={30} />
+            <Text style={styles.textTitle}>付款方式</Text>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>AliPay</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  paymentMethod: 'Aliselect',
+                });
+                setIsSelectPayment(true);
+              }}>
+              <MaterialCommunityIcons
+                name={
+                  check.paymentMethod === 'Aliselect'
+                    ? 'record-circle-outline'
+                    : 'circle-outline'
+                }
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>WeChat Pay</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  paymentMethod: 'Wechatselect',
+                });
+                setIsSelectPayment(true);
+              }}>
+              <MaterialCommunityIcons
+                name={
+                  check.paymentMethod === 'Wechatselect'
+                    ? 'record-circle-outline'
+                    : 'circle-outline'
+                }
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>現金/八達通</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  paymentMethod: 'Cashselect',
+                });
+                setIsSelectPayment(true);
+              }}>
+              <MaterialCommunityIcons
+                name={
+                  check.paymentMethod === 'Cashselect'
+                    ? 'record-circle-outline'
+                    : 'circle-outline'
+                }
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>VISA</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  paymentMethod: 'VISAselect',
+                });
+                setIsSelectPayment(true);
+              }}>
+              <MaterialCommunityIcons
+                name={
+                  check.paymentMethod === 'VISAselect'
+                    ? 'record-circle-outline'
+                    : 'circle-outline'
+                }
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
+          {isSelectPayment ? null : (
+            <Text style={styles.warnText}>付款方式不能為空！</Text>
+          )}
+        </View>
+        {/* Delivery edit---------------------------------------------------- */}
+        {/* <View style={styles.infoColumn}>
+          <View style={styles.infoRow}>
+            <MaterialCommunityIcons name="truck-delivery-outline" size={30} />
+            <Text style={styles.textTitle}>領取方法</Text>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>現場領取</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  deliveryMethod: 'LiveTake',
+                });
+                setIsSelectDelivery(true);
+              }}>
+              {check.deliveryMethod === 'LiveTake' ? (
+                <MaterialCommunityIcons
+                  name="record-circle-outline"
+                  size={20}
+                />
+              ) : (
+                <MaterialCommunityIcons name="circle-outline" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>本地分店</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  deliveryMethod: 'Local',
+                });
+                setIsSelectDelivery(true);
+              }}>
+              {check.deliveryMethod === 'Local' ? (
+                <MaterialCommunityIcons
+                  name="record-circle-outline"
+                  size={20}
+                />
+              ) : (
+                <MaterialCommunityIcons name="circle-outline" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>外地分店</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  deliveryMethod: 'Others',
+                });
+                setIsSelectDelivery(true);
+              }}>
+              {check.deliveryMethod === 'Others' ? (
+                <MaterialCommunityIcons
+                  name="record-circle-outline"
+                  size={20}
+                />
+              ) : (
+                <MaterialCommunityIcons name="circle-outline" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+          {isSelectDelivery ? null : (
+            <Text style={styles.warnText}>領取方式不能為空！</Text>
+          )}
+        </View> */}
+        {/* Discount code edit---------------------------------------------------- */}
+        <View style={styles.infoColumn}>
+          <View style={styles.infoRow}>
+            <Ionicons name="code-outline" color="#EA5E2A" size={30} />
+            <Text style={styles.textTitle}>優惠</Text>
+          </View>
+          <View style={styles.itemRow}>
+            <View style={styles.membershipInputView}>
+              <TextInput
+                style={{height: 40, color: 'black', width: '100%'}}
+                placeholder="會員號碼..."
+                placeholderTextColor="#003f5c"
+                value={check.memberId}
+                onChangeText={val => handleMemberIdChange(val)}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  discountType: 'member',
+                });
+                setIsSelectDiscountCode(true);
+              }}>
+              {check.discountType === 'member' ? (
+                <MaterialCommunityIcons
+                  name="record-circle-outline"
+                  size={20}
+                />
+              ) : (
+                <MaterialCommunityIcons name="circle-outline" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemRow}>
+            <View style={styles.membershipInputView}>
+              <TextInput
+                style={{height: 40, color: 'black', width: '100%'}}
+                placeholder="優惠碼..."
+                placeholderTextColor="#003f5c"
+                value={promotionCode}
+                onChangeText={val => handlePromotionCodeChange(val)}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  discountType: 'promotion',
+                });
+                setIsSelectDiscountCode(true);
+              }}>
+              {check.discountType === 'promotion' ? (
+                <MaterialCommunityIcons
+                  name="record-circle-outline"
+                  size={20}
+                />
+              ) : (
+                <MaterialCommunityIcons name="circle-outline" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemRow}>
+            <Text style={styles.text}>暫未提供</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setCheck({
+                  ...check,
+                  discountType: 'none',
+                });
+                setIsSelectDiscountCode(true);
+              }}>
+              {check.discountType === 'none' ? (
+                <MaterialCommunityIcons
+                  name="record-circle-outline"
+                  size={20}
+                />
+              ) : (
+                <MaterialCommunityIcons name="circle-outline" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+          {isSelectDiscountCode ? null : (
+            <Text style={styles.warnText}>優惠選項不能為空！</Text>
+          )}
+        </View>
+        {/* Shop staff Column edit------------------------------------------- */}
+        <View style={styles.infoColumn}>
+          <View style={styles.itemRow}>
+            <View style={styles.detailRow}>
+              <Ionicons
+                name="md-person-circle-sharp"
+                color="#EA5E2A"
+                size={25}
+              />
+              <Text style={styles.textTitle}>職員編號</Text>
+            </View>
+            <Text style={styles.text}>{staffData.staffID}</Text>
+          </View>
+          <View style={styles.itemRow}>
+            <View style={styles.detailRow}>
+              <Entypo name="shop" color="#EA5E2A" size={25} />
+              <Text style={styles.textTitle}>分店編號</Text>
+            </View>
+            <Text style={styles.text}>{staffData.shopID}</Text>
+          </View>
+        </View>
+        {/* Comfirm button edit------------------------------------------- */}
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            marginBottom: 40,
+            alignItems: 'center',
+            justifyContent: 'center',
+            //backgroundColor: 'yellow',
+          }}>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={() => {
+              Alert.alert('注意！', '訂單資料會被註銷，是否確定返回主頁面？', [
+                {
+                  text: '取消',
+                  onPress: () => null,
+                  style: 'cancel',
+                },
+                {
+                  text: '確定',
+                  onPress: () => {
+                    navigation.push('Home');
+                  },
+                },
+              ]);
+            }}>
+            <Text style={{color: 'white'}}>取消</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={() => {
+              emptySelectHandle(
+                productList,
+                check.paymentMethod,
+                check.deliveryMethod,
+                check.discountType,
+              );
+              // console.log(promotionCode);
+              // console.log(productList);
+            }}>
+            <Text style={{color: 'white'}}>確認</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }

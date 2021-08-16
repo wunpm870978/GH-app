@@ -89,20 +89,15 @@ export function HomeScreen({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      <MyStatusBar backgroundColor="#D6EAF8" barStyle="dark-content" />
+      <MyStatusBar backgroundColor="#F4F5F8" barStyle="dark-content" />
       <View style={styles.topRow}>
         <TouchableOpacity
-          style={styles.topRowLeft}
+          style={styles.topRowView}
           onPress={() => {
             signOut();
           }}>
-          <MaterialCommunityIcons
-            name="logout"
-            size={25}
-            color="#F1948A"
-            style={{paddingLeft: 20}}
-          />
-          <Text style={{paddingLeft: 10, color: '#F1948A'}}>登出</Text>
+          <Text style={{marginRight: 10, color: '#EA5E2A'}}>登出</Text>
+          <MaterialCommunityIcons name="logout" size={25} color="#EA5E2A" />
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -121,9 +116,9 @@ export function HomeScreen({route, navigation}) {
               name="pencil-alt"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>創建訂單</Text>
+            <Text style={{color: '#EA5E2A'}}>創建訂單</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
@@ -134,9 +129,9 @@ export function HomeScreen({route, navigation}) {
               name="gifts"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>優惠資訊</Text>
+            <Text style={{color: '#EA5E2A'}}>優惠資訊</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.btnRow}>
@@ -147,9 +142,9 @@ export function HomeScreen({route, navigation}) {
               name="qrcode-scan"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>掃描二維碼</Text>
+            <Text style={{color: '#EA5E2A'}}>掃描二維碼</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
@@ -158,9 +153,9 @@ export function HomeScreen({route, navigation}) {
               name="barcode-outline"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>掃描條碼</Text>
+            <Text style={{color: '#EA5E2A'}}>掃描條碼</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.btnRow}>
@@ -171,9 +166,9 @@ export function HomeScreen({route, navigation}) {
               name="dollar-sign"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>營業額</Text>
+            <Text style={{color: '#EA5E2A'}}>營業額</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
@@ -188,9 +183,9 @@ export function HomeScreen({route, navigation}) {
               name="library-outline"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>商城分類</Text>
+            <Text style={{color: '#EA5E2A'}}>商城分類</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.btnRow}>
@@ -203,9 +198,9 @@ export function HomeScreen({route, navigation}) {
               name="inventory"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>倉庫</Text>
+            <Text style={{color: '#EA5E2A'}}>倉庫</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
@@ -216,9 +211,9 @@ export function HomeScreen({route, navigation}) {
               name="pen-alt"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>值班</Text>
+            <Text style={{color: '#EA5E2A'}}>值班</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.btnRow}>
@@ -231,9 +226,9 @@ export function HomeScreen({route, navigation}) {
               name="inventory"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>倉庫</Text>
+            <Text style={{color: '#EA5E2A'}}>倉庫</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
@@ -244,9 +239,9 @@ export function HomeScreen({route, navigation}) {
               name="newspaper-outline"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
-              color="#F1948A"
+              color="#EA5E2A"
             />
-            <Text style={{color: '#F1948A'}}>公司消息</Text>
+            <Text style={{color: '#EA5E2A'}}>公司消息</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -5,20 +5,14 @@ const windowWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   scroll: {
     flex: 1,
     width: '100%',
-  },
-  infoPanel: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
+    padding: 20,
   },
   infoColumn: {
     borderRadius: 10,
@@ -26,18 +20,34 @@ export default StyleSheet.create({
     width: '100%',
     paddingVertical: 10,
     paddingHorizontal: 8,
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    //flexWrap: 'wrap',
+    //alignItems: 'center',
     backgroundColor: 'white',
-    justifyContent: 'flex-start',
+    //justifyContent: 'flex-start',
   },
   infoRow: {
-    //flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     justifyContent: 'flex-start',
   },
+  inputView: {
+    width: '100%',
+    //borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#D3D0D0',
+    height: 50,
+    marginBottom: 10,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  inputText: {
+    height: 50,
+    color: '#707070',
+    width: '100%',
+  },
+  //--------------member Info---------------//
   memberInfoRow: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -51,25 +61,31 @@ export default StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
   },
-  containInputView: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    backgroundColor: '#D6EAF8',
-  },
-  inputView: {
-    width: '100%',
-    backgroundColor: '#D6EAF8',
-    borderRadius: 20,
-    height: 50,
-    marginBottom: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    padding: 10,
-  },
   QRcodeColumn: {
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  //--------------cart info-----------------//
+  cartContainer: {
+    flex: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  cartContainer1: {
+    flex: 3.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#A9CA81',
+    borderRadius: 5,
+  },
+  borderLine: {
+    borderWidth: 0.5,
+    width: '100%',
+    marginBottom: 10,
+    borderColor: '#707070',
   },
   itemRow: {
     paddingHorizontal: 20,
@@ -81,7 +97,7 @@ export default StyleSheet.create({
   },
   membershipInputView: {
     width: '75%',
-    backgroundColor: '#D6EAF8',
+    backgroundColor: '#F4F5F8',
     borderRadius: 20,
     height: 40,
     marginLeft: -12,
@@ -91,9 +107,13 @@ export default StyleSheet.create({
     padding: 10,
   },
   confirmButton: {
-    flex: 5,
+    height: 50,
+    width: 100,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#A9CA81',
+    marginHorizontal: 10,
+    borderRadius: 10,
   },
   detailRow: {
     flexDirection: 'row',
@@ -101,11 +121,17 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: 'white',
   },
-  text: {
-    //flex: 15,
-    alignItems: 'flex-start',
+  textTitle: {
     fontSize: 15,
-    justifyContent: 'flex-start',
+    color: '#EA5E2A',
+  },
+  textTitle1: {
+    fontSize: 15,
+    color: 'white',
+  },
+  text: {
+    fontSize: 15,
+    color: '#707070',
   },
   warnText: {
     fontSize: 12,

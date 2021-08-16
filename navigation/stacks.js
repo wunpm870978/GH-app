@@ -147,8 +147,11 @@ export const OrderStackNavigator = () => {
         options={{
           title: '創建訂單',
           headerStyle: {
-            backgroundColor: '#D6EAF8',
+            backgroundColor: '#F4F5F8',
+            //borderBottomWidth: 1,
+            //borderColor: '#A9CA81',
           },
+          headerTintColor: '#EA5E2A',
         }}
       />
       <Stack.Screen

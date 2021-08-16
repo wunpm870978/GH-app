@@ -15,6 +15,8 @@ import Anticon from 'react-native-vector-icons/AntDesign';
 import Micon from 'react-native-vector-icons/MaterialIcons';
 import {AuthContext} from '../api/authText.js';
 import {apiLoginHandle} from '../api/login.js';
+import {MyStatusBar} from '../style/StatusBar.js';
+
 export function LoginScreen({navigation}) {
   const [data, setData] = React.useState({
     username: '',
@@ -109,19 +111,19 @@ export function LoginScreen({navigation}) {
 
   const signinPanel = () => {
     return (
-      <View>
+      <View style={{width: '80%'}}>
         <View style={styles.inputView}>
           <View style={styles.row}>
             <Anticon
               name="user"
               size={25}
-              color="grey"
-              style={{paddingRight: 5}}
+              color="#707070"
+              style={{marginRight: 5}}
             />
             <TextInput
-              style={[{height: 50}, {color: 'black'}, {width: '80%'}]}
+              style={{height: 50, color: '#707070', width: '80%'}}
               placeholder="使用者名稱..."
-              placeholderTextColor="grey"
+              placeholderTextColor="#707070"
               onChangeText={val => textInputChange(val)}
               onEndEditing={e => handleValidUser(e.nativeEvent.text)}
             />
@@ -141,32 +143,25 @@ export function LoginScreen({navigation}) {
             <Anticon
               name="lock"
               size={25}
-              color="grey"
-              style={{paddingRight: 5}}
+              color="#707070"
+              style={{marginRight: 5}}
             />
             <TextInput
-              style={[{height: 50}, {color: 'black'}, {width: '80%'}]}
+              style={{height: 50, color: '#707070', width: '80%'}}
               secureTextEntry={data.secureTextEntry ? true : false}
               placeholder="密碼..."
-              placeholderTextColor="grey"
+              placeholderTextColor="#707070"
               value={data.password}
               onChangeText={val => handlePasswordChange(val)}
               onEndEditing={e => handleValidPassword(e.nativeEvent.text)}
             />
             <TouchableOpacity onPress={updateSecureTextEntry}>
-              {data.secureTextEntry ? (
-                <Micon
-                  name="visibility-off"
-                  size={20}
-                  style={[{flexDirection: 'row-reverse'}]}
-                />
-              ) : (
-                <Micon
-                  name="visibility"
-                  size={20}
-                  style={[{flexDirection: 'row-reverse'}]}
-                />
-              )}
+              <Micon
+                name={data.secureTextEntry ? 'visibility-off' : 'visibility'}
+                size={20}
+                color="#707070"
+                style={{flexDirection: 'row-reverse'}}
+              />
             </TouchableOpacity>
           </View>
           {data.isValidPassword ? null : (
@@ -188,22 +183,34 @@ export function LoginScreen({navigation}) {
 
   const forgotPanel = () => {
     return (
-      <View>
+      <View style={{width: '80%'}}>
         <View style={styles.inputView}>
           <View style={styles.row}>
             <Anticon
               name="user"
               size={25}
-              color="grey"
-              style={
-                {paddingRight: 5}
-                // {flexDirection: 'row-reverse'}
-              }
+              color="#707070"
+              style={{marginRight: 5}}
             />
             <TextInput
-              style={[{height: 50}, {color: 'black'}, {width: '80%'}]}
+              style={{height: 50, color: '#707070', width: '80%'}}
+              placeholder="使用者名稱..."
+              placeholderTextColor="#707070"
+              onChangeText={val => textInputChange(val)}
+              onEndEditing={e => handleValidUser(e.nativeEvent.text)}
+            />
+          </View>
+          <View style={styles.row}>
+            <Anticon
+              name="mail"
+              size={25}
+              color="#707070"
+              style={{marginRight: 5}}
+            />
+            <TextInput
+              style={{height: 50, color: '#707070', width: '80%'}}
               placeholder="Email..."
-              placeholderTextColor="grey"
+              placeholderTextColor="#707070"
               onChangeText={val => textInputChange(val)}
               onEndEditing={e => handleValidUser(e.nativeEvent.text)}
             />
@@ -216,11 +223,6 @@ export function LoginScreen({navigation}) {
               />
             ) : null}
           </View>
-          {data.isValidUser ? null : (
-            <Text style={styles.warnText}>
-              Username must be at least 4 characters longs
-            </Text>
-          )}
         </View>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity
@@ -238,44 +240,36 @@ export function LoginScreen({navigation}) {
 
   return (
     <View style={styles.container}>
+      <MyStatusBar backgroundColor="#F4F5F8" barStyle="dark-content" />
       <View style={styles.upperContainer}>
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require('../images/logo/logo_gh.png')}
+            source={require('../images/logo/GH_logo_3x.png')}
           />
         </View>
-        <View style={styles.toggleView}>
-          <View style={styles.toggleLeft}>
-            {!isForgot ? (
-              <TouchableOpacity
-                onPress={() => forgotHandle(false)}
-                style={styles.toggleButton}>
-                <Text style={{color: 'black', fontSize: 13}}>登入</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => forgotHandle(false)}
-                style={styles.toggleButtonFalse}>
-                <Text style={{color: 'white', fontSize: 13}}>登入</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-          <View style={styles.toggleRight}>
-            {isForgot ? (
-              <TouchableOpacity
-                onPress={() => forgotHandle(true)}
-                style={styles.toggleButton}>
-                <Text style={{color: 'black', fontSize: 13}}>忘記密碼</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => forgotHandle(true)}
-                style={styles.toggleButtonFalse}>
-                <Text style={{color: 'white', fontSize: 13}}>忘記密碼</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+        <View style={styles.toggleContainer}>
+          <TouchableOpacity
+            onPress={() => forgotHandle(false)}
+            style={[
+              styles.toggleBtn,
+              {backgroundColor: !isForgot ? '#A9CA81' : 'white'},
+            ]}>
+            <Text
+              style={{color: !isForgot ? 'white' : '#707070', fontSize: 13}}>
+              登入
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => forgotHandle(true)}
+            style={[
+              styles.toggleBtn,
+              {backgroundColor: isForgot ? '#A9CA81' : 'white'},
+            ]}>
+            <Text style={{color: isForgot ? 'white' : '#707070', fontSize: 13}}>
+              忘記密碼
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.bottomContainer}>
