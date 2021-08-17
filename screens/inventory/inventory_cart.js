@@ -27,7 +27,7 @@ export function CartInventoryScreen({route, navigation}) {
   const [staffData, setStaffData] = React.useState('');
   const [currentItem, setCurrentItem] = React.useState({
     shop: '',
-    district: '',
+    location: '',
     quantity: 1,
     deliveryDate: '運送日期',
     deliveryTime: '',
@@ -101,7 +101,7 @@ export function CartInventoryScreen({route, navigation}) {
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flex: 7}}>
               <Text>
-                {data.district} - {data.shopID}
+                {data.location} - {data.shopID}
               </Text>
             </View>
             <View
@@ -117,7 +117,7 @@ export function CartInventoryScreen({route, navigation}) {
                   setCurrentItem({
                     ...data,
                     shop: data.shopID,
-                    district: data.district,
+                    location: data.location,
                     quantity: data.quantity,
                     deliveryDate: data.deliveryDate,
                     deliveryTime: data.deliveryTime,
@@ -135,7 +135,7 @@ export function CartInventoryScreen({route, navigation}) {
                   setCurrentItem({
                     ...data,
                     shop: data.shopID,
-                    district: data.district,
+                    location: data.location,
                     quantity: data.quantity,
                     deliveryDate: data.deliveryDate,
                     deliveryTime: data.deliveryTime,
@@ -246,7 +246,7 @@ export function CartInventoryScreen({route, navigation}) {
               />
             </View>
             <View style={styles.modalTitleContainer}>
-              <Text style={styles.modalTitle}>{staffData.district}</Text>
+              <Text style={styles.modalTitle}>{currentItem.location}</Text>
               <Text style={styles.modalTitle}>{currentItem.shop}</Text>
             </View>
             <View style={{borderWidth: 0.5, width: 250}} />
@@ -298,7 +298,7 @@ export function CartInventoryScreen({route, navigation}) {
                         console.log(element);
                         tempCart.push({
                           shopID: currentItem.shop,
-                          district: currentItem.district,
+                          location: currentItem.location,
                           quantity: currentItem.quantity,
                           deliveryDate: currentItem.deliveryDate,
                           deliveryTime: currentItem.deliveryTime,

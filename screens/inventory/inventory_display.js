@@ -71,7 +71,6 @@ export function DisplayInventoryScreen({route, navigation}) {
     Southern: true,
     Wan_Chai: true,
   });
-
   const [datePicker, setDatePicker] = React.useState({
     isVisible: false,
     pickerMode: null,
@@ -253,7 +252,7 @@ export function DisplayInventoryScreen({route, navigation}) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [currentItem, setCurrentItem] = React.useState({
     shop: '',
-    district: '',
+    location: '',
     quantity: 1,
     deliveryDate: '運送日期',
     deliveryTime: '',
@@ -516,7 +515,7 @@ export function DisplayInventoryScreen({route, navigation}) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={styles.modalTitle}>{staffData.district}</Text>
+              <Text style={styles.modalTitle}>{currentItem.location}</Text>
               <Text style={styles.modalTitle}>{currentItem.shop}</Text>
             </View>
             <View style={{borderWidth: 0.5, width: 250}} />
@@ -562,7 +561,7 @@ export function DisplayInventoryScreen({route, navigation}) {
                   } else {
                     cart.push({
                       shopID: currentItem.shop,
-                      district: currentItem.district,
+                      location: currentItem.location,
                       deliveryDate: currentItem.deliveryDate,
                       deliveryTime: currentItem.deliveryTime,
                       quantity: currentItem.quantity,

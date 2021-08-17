@@ -28,6 +28,7 @@ export function SearchInventoryScreen({route, navigation}) {
   const [staffData, setStaffData] = React.useState({
     staffID: '',
     district: '',
+    location: '',
     position: '',
     token: '',
     shopID: '',
@@ -39,7 +40,7 @@ export function SearchInventoryScreen({route, navigation}) {
   const loadStaff = async () => {
     try {
       await AsyncStorage.multiGet(
-        ['staffID', 'district', 'position', 'userToken', 'shop_id'],
+        ['staffID', 'district', 'location', 'position', 'userToken', 'shop_id'],
         (err, asyncData) => {
           if (err) {
             console.log(err);
@@ -47,6 +48,7 @@ export function SearchInventoryScreen({route, navigation}) {
           const temp = {
             staffID: '',
             district: '',
+            location: '',
             position: '',
             token: '',
             shopID: '',
@@ -58,6 +60,9 @@ export function SearchInventoryScreen({route, navigation}) {
                 break;
               case 'district':
                 temp.district = result[1];
+                break;
+              case 'location':
+                temp.location = result[1];
                 break;
               case 'position':
                 temp.position = result[1];
@@ -73,6 +78,7 @@ export function SearchInventoryScreen({route, navigation}) {
           setStaffData({
             staffID: temp.staffID,
             district: temp.district,
+            location: temp.location,
             position: temp.position,
             token: temp.token,
             shopID: temp.shopID,

@@ -6,7 +6,6 @@ import React from 'react';
 import {Image, Text, View, TouchableOpacity} from 'react-native';
 import styles from '../../style/inventory/inventory_display_style.js';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export function DisplayQuantityScreen({route, navigation}) {
   //<----------------------hooks------------------------>
@@ -27,11 +26,11 @@ export function DisplayQuantityScreen({route, navigation}) {
       quantity: route.params?.quantityInfo.unit,
     });
 
-    setStaffData(route.params?.staffData);
+    //setStaffData(route.params?.staffData);
   }, [navigation, route.params?.quantityInfo]);
   //<------------------------------------------->
   //<-----------------initialization---------------------------->
-  const [staffData, setStaffData] = React.useState(null);
+  //const [staffData, setStaffData] = React.useState(null);
   const [productInfo, setProductInfo] = React.useState({
     productID: '',
     cCode: '',

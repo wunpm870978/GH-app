@@ -105,10 +105,7 @@ export function DiscountInfoScreen({route, navigation}) {
             </Text>
           </View>
           <View style={styles.copyIconPanel}>
-            <TouchableOpacity
-              onPress={() => Clipboard.setString(props.data.promotionCode)}>
-              <Ionicons name="clipboard-outline" size={25} color="grey" />
-            </TouchableOpacity>
+            <Ionicons name="clipboard-outline" size={25} color="grey" />
           </View>
         </View>
       );
@@ -141,7 +138,9 @@ export function DiscountInfoScreen({route, navigation}) {
           </View>
           <View style={styles.copyIconPanel}>
             <TouchableOpacity
-              onPress={() => Clipboard.setString(props.data.promotionCode)}>
+              onPress={() => {
+                Clipboard.setString(props.data.promotionCode);
+              }}>
               <Ionicons name="clipboard-outline" size={25} color="#EA5E2A" />
             </TouchableOpacity>
           </View>
