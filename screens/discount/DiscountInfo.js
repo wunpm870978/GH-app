@@ -2,57 +2,71 @@
 /* eslint-disable react-native/no-inline-styles */
 
 import React from 'react';
-import {Alert, FlatList, Text, View, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import styles from '../../style/discountInfo_style.js';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  apiNewRelease,
-  apiSoonEnd,
-  apiDiscountList,
-} from '../../api/discount.js';
+import {apiDiscountList, combineFetchPromotion} from '../../api/discount.js';
 
 export function DiscountInfoScreen({route, navigation}) {
+  const InitialState = {
+    isLoading: true,
+    token: '',
+    toggleFilter: false,
+    newRelease: null,
+    soonEnd: null,
+  };
+  const reducer = (prevState, action) => {
+    switch (action.type) {
+      case 'TOGGLENEW':
+        return {
+          ...prevState,
+          toggleFilter: false,
+        };
+      case 'TOGGLEEND':
+        return {
+          ...prevState,
+          toggleFilter: true,
+        };
+      case 'ENDFETCHING':
+        return {
+          ...prevState,
+          token: action.token,
+          newRelease: action.newRelease,
+          soonEnd: action.soonEnd,
+          isLoading: false,
+        };
+    }
+  };
+  const [state, dispatch] = React.useReducer(reducer, InitialState);
+
   React.useLayoutEffect(() => {
     loadPage();
   }, [navigation]);
-
-  const [toggleFilter, setToggleFilter] = React.useState(false);
-  const [newRelease, setNewRelease] = React.useState(null);
-  const [soonEnd, setSoonEnd] = React.useState(null);
-  const [token, setToken] = React.useState(null);
-
   const loadPage = async () => {
     let userToken = '';
     userToken = await AsyncStorage.getItem('userToken');
 
-    const [status, result] = await apiNewRelease(userToken);
-    if (status !== 200 || result.hasOwnProperty('error')) {
-      Alert.alert('Error', result.error, [{text: 'OK'}]);
+    const [status, results] = await combineFetchPromotion(userToken);
+    if (status !== 200 || results.hasOwnProperty('error')) {
+      Alert.alert('Error', results.error, [{text: 'OK'}]);
     } else {
-      setToken(userToken);
-      setNewRelease(result);
-    }
-  };
-
-  const apiProductNewRelease = async () => {
-    const [status, result] = await apiNewRelease(token);
-    if (status !== 200 || result.hasOwnProperty('error')) {
-      Alert.alert('Error', result.error, [{text: 'OK'}]);
-    } else {
-      setNewRelease(result);
-    }
-  };
-
-  const apiProductEndSoon = async () => {
-    const [status, result] = await apiSoonEnd(token);
-    if (status !== 200 || result.hasOwnProperty('error')) {
-      Alert.alert('Error', result.error, [{text: 'OK'}]);
-    } else {
-      setSoonEnd(result);
+      dispatch({
+        type: 'ENDFETCHING',
+        token: userToken,
+        newRelease: results.newP,
+        soonEnd: results.endP,
+      });
     }
   };
 
@@ -71,7 +85,7 @@ export function DiscountInfoScreen({route, navigation}) {
     function renderItem(props) {
       return <Item data={props.item} />;
     },
-    [token],
+    [state.token],
   );
 
   const Item = React.memo(function Item(props) {
@@ -114,7 +128,7 @@ export function DiscountInfoScreen({route, navigation}) {
         <TouchableOpacity
           style={styles.discountContainer}
           onPress={() => {
-            searchDiscountList(token, props.data.promotionCode);
+            searchDiscountList(state.token, props.data.promotionCode);
           }}>
           <View style={styles.timeIconPanel}>
             {dateTimeValidationIcon(props.data.endDate)}
@@ -205,29 +219,41 @@ export function DiscountInfoScreen({route, navigation}) {
     }
   };
 
+  if (state.isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.upperPart}>
           <TouchableOpacity
             onPress={() => {
-              console.log(newRelease);
+              //console.log(newRelease);
             }}>
             <MaterialCommunityIcons
               name="lightbulb-on-outline"
-              size={toggleFilter ? 15 : 20}
-              color={toggleFilter ? 'grey' : '#E5E535'}
+              size={state.toggleFilter ? 15 : 20}
+              color={state.toggleFilter ? 'grey' : '#E5E535'}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setToggleFilter(false);
-              apiProductNewRelease();
+              dispatch({type: 'TOGGLENEW'});
             }}>
             <Text
               style={[
-                {fontSize: toggleFilter ? 13 : 15},
-                {color: toggleFilter ? 'grey' : 'black'},
+                {fontSize: state.toggleFilter ? 13 : 15},
+                {color: state.toggleFilter ? 'grey' : 'black'},
               ]}>
               最新發佈
             </Text>
@@ -235,23 +261,22 @@ export function DiscountInfoScreen({route, navigation}) {
           <Text style={{fontSize: 15}}> / </Text>
           <TouchableOpacity
             onPress={() => {
-              console.log(soonEnd);
+              //console.log(soonEnd);
             }}>
             <MaterialCommunityIcons
               name="exclamation-thick"
-              size={toggleFilter ? 20 : 15}
-              color={toggleFilter ? 'red' : 'grey'}
+              size={state.toggleFilter ? 20 : 15}
+              color={state.toggleFilter ? 'red' : 'grey'}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setToggleFilter(true);
-              apiProductEndSoon();
+              dispatch({type: 'TOGGLEEND'});
             }}>
             <Text
               style={[
-                {fontSize: toggleFilter ? 15 : 13},
-                {color: toggleFilter ? 'black' : 'grey'},
+                {fontSize: state.toggleFilter ? 15 : 13},
+                {color: state.toggleFilter ? 'black' : 'grey'},
               ]}>
               即將完結
             </Text>
@@ -261,12 +286,14 @@ export function DiscountInfoScreen({route, navigation}) {
           <FlatList
             style={{width: '100%'}}
             keyExtractor={
-              toggleFilter === false
+              state.toggleFilter === false
                 ? index => 'newRelease' + index.promotionCode
                 : index => 'soonEnd' + index.promotionCode
             }
-            data={toggleFilter === false ? newRelease : soonEnd}
-            extraData={token}
+            data={
+              state.toggleFilter === false ? state.newRelease : state.soonEnd
+            }
+            extraData={state.token}
             renderItem={renderItem}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}

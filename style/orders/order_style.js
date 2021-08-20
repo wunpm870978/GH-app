@@ -133,8 +133,13 @@ export default StyleSheet.create({
     fontSize: 15,
     color: '#707070',
   },
+  warnTextContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   warnText: {
-    fontSize: 12,
+    fontSize: 13,
     color: 'red',
     alignItems: 'center',
     justifyContent: 'center',

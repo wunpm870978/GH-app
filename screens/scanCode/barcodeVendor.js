@@ -239,7 +239,7 @@ export function BarcodeVendorScreen({route, navigation}) {
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: 10,
-              borderWidth: 1,
+              backgroundColor: '#A9CA81',
             }}
             onPress={() => {
               if (productInfo.name !== '' && productInfo.quantity !== 0) {
@@ -248,7 +248,7 @@ export function BarcodeVendorScreen({route, navigation}) {
                 });
               }
             }}>
-            <Text style={{fontSize: 16}}>加入購物籃</Text>
+            <Text style={{fontSize: 16, color: 'white'}}>加入購物籃</Text>
           </TouchableOpacity>
         </View>
         {/* <View style={styles.infoRow}>

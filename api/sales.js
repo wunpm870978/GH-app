@@ -3,9 +3,11 @@ import {Platform} from 'react-native';
 
 export const apiCreateSalesRecord = async (
   photo,
-  salesData,
+  date,
+  time,
+  price,
   productList,
-  staffData,
+  shopID,
 ) => {
   const url = 'http://172.104.44.182:3000/sales/createSales';
   const data = new FormData();
@@ -16,10 +18,10 @@ export const apiCreateSalesRecord = async (
       Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
   });
 
-  data.append('date', salesData.date);
-  data.append('time', salesData.time);
-  data.append('shopID', staffData.shopID);
-  data.append('totalPrice', salesData.price);
+  data.append('date', date);
+  data.append('time', time);
+  data.append('shopID', shopID);
+  data.append('totalPrice', price);
   data.append('productList', JSON.stringify(productList));
 
   const requestOptions = {
@@ -38,7 +40,9 @@ export const apiCreateSalesRecord = async (
     return [status, result];
   } catch (error) {
     console.log('test', error);
-    throw error;
+    let status = 404;
+    let result = error;
+    return [status, result];
   }
 };
 

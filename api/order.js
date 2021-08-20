@@ -28,8 +28,6 @@ export const apiUploadPaymentRecord = async (
   data.append('freeProductList', JSON.stringify(freeProductList));
   data.append('staffData', JSON.stringify(staffData));
   data.append('totalPrice', totalPrice);
-  //   console.log(data);
-  //   return data;
 
   const requestOptions = {
     method: 'POST',
@@ -46,7 +44,7 @@ export const apiUploadPaymentRecord = async (
     const status = await response.status;
     return [status, result];
   } catch (error) {
-    console.log('test', error);
+    console.log('apiUploadPaymentRecord', error);
     throw error;
   }
 };

@@ -24,14 +24,12 @@ export function CompanyNewsScreen({route, navigation}) {
     let userToken = '';
     userToken = await AsyncStorage.getItem('userToken');
     const requestOptions = {
-      method: 'POST',
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + userToken,
       },
-      body: JSON.stringify({
-        token: userToken,
-      }),
       redirect: 'follow',
     };
 

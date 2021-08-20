@@ -17,110 +17,126 @@ export function SearchInventoryScreen({route, navigation}) {
   React.useLayoutEffect(() => {
     loadStaff();
   }, [navigation]);
-
-  React.useEffect(() => {
-    if (route.params?.barcodeInfo) {
-      setSearchQuery(state => route.params?.barcodeInfo);
-    }
-  }, [route.params?.barcodeInfo]);
-  //<-------------------------------------------------------->
-
-  const [staffData, setStaffData] = React.useState({
+  //-----------------redux----------------------------//
+  const InitialState = {
+    isLoading: false,
     staffID: '',
     district: '',
     location: '',
     position: '',
     token: '',
     shopID: '',
-  });
+    searchQuery: '',
+  };
+  const reducer = (prevState, action) => {
+    switch (action.type) {
+      case 'GET_STAFF_INFO':
+        return {
+          ...prevState,
+          staffID: action.staffID,
+          district: action.district,
+          location: action.location,
+          position: action.position,
+          token: action.token,
+          shopID: action.shopID,
+        };
+      case 'ON_CHANGE_QUERY':
+        return {
+          ...prevState,
+          searchQuery: action.searchQuery,
+        };
+      case 'FETCHING_API':
+        return {
+          ...prevState,
+          isLoading: action.isLoading,
+        };
+      default:
+        break;
+    }
+  };
+  const [state, dispatch] = React.useReducer(reducer, InitialState);
 
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const onChangeSearch = query => setSearchQuery(query);
+  React.useEffect(() => {
+    if (route.params?.barcodeInfo) {
+      dispatch({
+        type: 'ON_CHANGE_QUERY',
+        searchQuery: route.params?.barcodeInfo,
+      });
+    }
+  }, [route.params?.barcodeInfo]);
+
+  const onChangeSearch = query =>
+    dispatch({type: 'ON_CHANGE_QUERY', searchQuery: query});
 
   const loadStaff = async () => {
     try {
-      await AsyncStorage.multiGet(
-        ['staffID', 'district', 'location', 'position', 'userToken', 'shop_id'],
-        (err, asyncData) => {
-          if (err) {
-            console.log(err);
-          }
-          const temp = {
-            staffID: '',
-            district: '',
-            location: '',
-            position: '',
-            token: '',
-            shopID: '',
-          };
-          asyncData.map(result => {
-            switch (result[0]) {
-              case 'staffID':
-                temp.staffID = result[1];
-                break;
-              case 'district':
-                temp.district = result[1];
-                break;
-              case 'location':
-                temp.location = result[1];
-                break;
-              case 'position':
-                temp.position = result[1];
-                break;
-              case 'userToken':
-                temp.token = result[1];
-                break;
-              case 'shop_id':
-                temp.shopID = result[1];
-                break;
-            }
-          });
-          setStaffData({
-            staffID: temp.staffID,
-            district: temp.district,
-            location: temp.location,
-            position: temp.position,
-            token: temp.token,
-            shopID: temp.shopID,
-          });
-        },
-      );
+      let staffID = await AsyncStorage.getItem('staffID');
+      let district = await AsyncStorage.getItem('district');
+      let location = await AsyncStorage.getItem('location');
+      let position = await AsyncStorage.getItem('position');
+      let token = await AsyncStorage.getItem('userToken');
+      let shopID = await AsyncStorage.getItem('shop_id');
+      dispatch({
+        type: 'GET_STAFF_INFO',
+        staffID: staffID,
+        district: district,
+        location: location,
+        position: position,
+        token: token,
+        shopID: shopID,
+      });
     } catch (e) {
       console.log(e);
     }
   };
   const getData = async () => {
-    if (staffData.position === 'manager') {
+    if (state.position === 'manager') {
       const inventoryInfo = await apiFetchShopInventory(
-        searchQuery,
-        staffData.district,
-        staffData.token,
+        state.searchQuery,
+        state.district,
+        state.token,
       );
-      const productInfo = await apiFetchProductInfo(
-        searchQuery,
-        staffData.token,
+      const [status, result] = await apiFetchProductInfo(
+        state.searchQuery,
+        state.token,
       );
+      dispatch({type: 'FETCHING_API', isLoading: false});
       if (inventoryInfo.hasOwnProperty('error')) {
         Alert.alert('Error', inventoryInfo.error, [{text: 'OK'}]);
       } else {
         navigation.navigate('DisplayInventory', {
           inventoryInfo: inventoryInfo,
-          productInfo: productInfo[0],
-          staffData: staffData,
+          productInfo: result[0],
+          staffData: {
+            staffID: state.staffID,
+            district: state.district,
+            location: state.location,
+            position: state.position,
+            token: state.token,
+            shopID: state.shopID,
+          },
         });
       }
     } else {
       const quantityInfo = await apiFetchProductQty(
-        searchQuery,
-        staffData.shopID,
-        staffData.token,
+        state.searchQuery,
+        state.shopID,
+        state.token,
       );
+      dispatch({type: 'FETCHING_API', isLoading: false});
       if (quantityInfo.hasOwnProperty('error')) {
         Alert.alert('Error', quantityInfo.error, [{text: 'OK'}]);
       } else {
         navigation.navigate('DisplayQuantity', {
           quantityInfo: quantityInfo[0],
-          staffData: staffData,
+          staffData: {
+            staffID: state.staffID,
+            district: state.district,
+            location: state.location,
+            position: state.position,
+            token: state.token,
+            shopID: state.shopID,
+          },
         });
       }
     }
@@ -134,8 +150,9 @@ export function SearchInventoryScreen({route, navigation}) {
             style={{marginTop: 10, width: '90%'}}
             placeholder="貨品號碼/條碼..."
             onChangeText={onChangeSearch}
-            value={searchQuery}
+            value={state.searchQuery}
             onIconPress={() => {
+              dispatch({type: 'FETCHING_API', isLoading: true});
               getData();
             }}
           />

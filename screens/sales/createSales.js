@@ -10,6 +10,7 @@ import {
   TextInput,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import styles from '../../style/sales/createSales_style.js';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -25,59 +26,15 @@ export function CreateSalesScreen({navigation}) {
   React.useLayoutEffect(() => {
     loadStaff();
   }, [navigation]);
-  const loadStaff = async () => {
-    try {
-      await AsyncStorage.multiGet(
-        ['staffID', 'district', 'position', 'userToken', 'shop_id'],
-        (err, asyncData) => {
-          if (err) {
-            console.log(err);
-          }
-          const temp = {
-            staffID: '',
-            district: '',
-            position: '',
-            token: '',
-            shopID: '',
-          };
-          asyncData.map(result => {
-            switch (result[0]) {
-              case 'staffID':
-                temp.staffID = result[1];
-                break;
-              case 'district':
-                temp.district = result[1];
-                break;
-              case 'position':
-                temp.position = result[1];
-                break;
-              case 'userToken':
-                temp.token = result[1];
-                break;
-              case 'shop_id':
-                temp.shopID = result[1];
-                break;
-            }
-          });
-          setStaffData({
-            staffID: temp.staffID,
-            district: temp.district,
-            position: temp.position,
-            token: temp.token,
-            shopID: temp.shopID,
-          });
-        },
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const [datePicker, setDatePicker] = React.useState({
-    isVisible: false,
-    pickerMode: null,
-    display: 'default',
-  });
-  const [salesData, setSalesData] = React.useState({
+  //-----------------redux----------------------------//
+  const InitialState = {
+    isLoading: false,
+    staffID: '',
+    district: '',
+    location: '',
+    position: '',
+    token: '',
+    shopID: '',
     date: '日期',
     time: '時間',
     productID: '',
@@ -85,64 +42,137 @@ export function CreateSalesScreen({navigation}) {
     brand: '',
     price: '',
     notice: '',
-  });
-  const [staffData, setStaffData] = React.useState({
-    staffID: '',
-    district: '',
-    position: '',
-    token: '',
-    shopID: '',
-  });
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [response, setResponse] = React.useState('未選擇任何相片');
-  const [productList, setProductList] = React.useState([]);
+    isVisible: false,
+    modalVisible: false,
+    pickerMode: null,
+    display: 'default',
+    response: '未選擇任何相片',
+    productList: [],
+  };
+  const reducer = (prevState, action) => {
+    switch (action.type) {
+      case 'UPLOADING_RECORD':
+        return {
+          ...prevState,
+          isLoading: action.isLoading,
+        };
+      case 'GET_STAFF_INFO':
+        return {
+          ...prevState,
+          staffID: action.staffID,
+          district: action.district,
+          location: action.location,
+          position: action.position,
+          token: action.token,
+          shopID: action.shopID,
+        };
+      case 'SET_PRODUCTID':
+        return {
+          ...prevState,
+          productID: action.productID,
+        };
+      case 'SET_PRICE':
+        return {
+          ...prevState,
+          price: action.price,
+        };
+      case 'SET_NOTICE':
+        return {
+          ...prevState,
+          notice: action.notice,
+        };
+      case 'TOGGLE_MODAL':
+        return {
+          ...prevState,
+          modalVisible: action.modalVisible,
+        };
+      case 'TOGGLE_ORDERTIME':
+        return {
+          ...prevState,
+          pickerMode: action.pickerMode,
+          display: action.display,
+          isVisible: !prevState.isVisible,
+        };
+      case 'HIDE_DATE_PICKER':
+        return {
+          ...prevState,
+          isVisible: !prevState.isVisible,
+        };
+      case 'CONFIRM_DATE_TIME_PICKER':
+        return {
+          ...prevState,
+          date: action.date,
+          time: action.time,
+        };
+      case 'SET_PRODUCTLIST':
+        return {
+          ...prevState,
+          productList: action.productList,
+        };
+      case 'LAUNCH_CAMERA':
+        return {
+          ...prevState,
+          response: action.response,
+        };
+      default:
+        break;
+    }
+  };
+  const [state, dispatch] = React.useReducer(reducer, InitialState);
+  const loadStaff = async () => {
+    let staffID = await AsyncStorage.getItem('staffID');
+    let district = await AsyncStorage.getItem('district');
+    let location = await AsyncStorage.getItem('location');
+    let position = await AsyncStorage.getItem('position');
+    let token = await AsyncStorage.getItem('userToken');
+    let shopID = await AsyncStorage.getItem('shop_id');
+    dispatch({
+      type: 'GET_STAFF_INFO',
+      staffID: staffID,
+      district: district,
+      location: location,
+      position: position,
+      token: token,
+      shopID: shopID,
+    });
+  };
   const windowWidth = Dimensions.get('window').width;
 
   const handleItemChange = val => {
-    setSalesData({
-      ...salesData,
+    dispatch({
+      type: 'SET_PRODUCTID',
       productID: val,
     });
   };
   const handlePriceChange = val => {
-    setSalesData({
-      ...salesData,
+    dispatch({
+      type: 'SET_PRICE',
       price: val,
     });
   };
   const handleNoticeChange = val => {
-    setSalesData({
-      ...salesData,
+    dispatch({
+      type: 'SET_NOTICE',
       notice: val,
     });
   };
 
   const confirmValidation = () => {
     if (
-      salesData.date === '日期' ||
-      salesData.time === '時間' ||
-      productList.length === 0 ||
-      salesData.price === '' ||
-      response === '未選擇任何相片'
+      state.date === '日期' ||
+      state.time === '時間' ||
+      state.productList.length === 0 ||
+      state.price === '' ||
+      state.response === '未選擇任何相片' ||
+      state.response.didCancel === true
     ) {
       Alert.alert('注意', '日期時間、貨品、價錢及收據不能為空！');
     } else {
-      setModalVisible(true);
+      dispatch({
+        type: 'TOGGLE_MODAL',
+        modalVisible: true,
+      });
     }
-  };
-  const toggleOrderTime = () => {
-    setDatePicker({
-      ...datePicker,
-      pickerMode: 'datetime',
-      display: 'spinner',
-      isVisible: !datePicker.isVisible,
-    });
-  };
-  const hideDatePicker = () => {
-    setDatePicker({
-      ...datePicker,
-      isVisible: false,
-    });
   };
   const handleConfirm = val => {
     let day = ('0' + val.getDate()).slice(-2);
@@ -150,30 +180,40 @@ export function CreateSalesScreen({navigation}) {
     let year = val.getFullYear();
     let hours = ('0' + val.getHours()).slice(-2);
     let minutes = ('0' + val.getMinutes()).slice(-2);
-    setSalesData({
-      ...salesData,
+    dispatch({
+      type: 'CONFIRM_DATE_TIME_PICKER',
       date: year + '-' + month + '-' + day,
       time: hours + ':' + minutes + ':' + '00',
     });
-    hideDatePicker();
+    dispatch({type: 'HIDE_DATE_PICKER'});
   };
 
   const createRecord = async () => {
-    const [status] = await apiCreateSalesRecord(
-      response.assets[0],
-      salesData,
-      productList,
-      staffData,
+    const [status, result] = await apiCreateSalesRecord(
+      state.response.assets[0],
+      state.date,
+      state.time,
+      state.price,
+      state.productList,
+      state.shopID,
     );
     if (status === 200) {
+      dispatch({
+        type: 'UPLOADING_RECORD',
+        isLoading: false,
+      });
       navigation.replace('Success');
-      console.log(status);
     } else {
+      dispatch({
+        type: 'UPLOADING_RECORD',
+        isLoading: false,
+      });
       Alert.alert('錯誤', '新增記錄失敗!');
+      Alert.alert('錯誤', result);
     }
   };
 
-  const renderItem = productList.map((element, index) => {
+  const renderItem = state.productList.map((element, index) => {
     return (
       <View
         key={'mainContainer' + index.toString()}
@@ -203,11 +243,14 @@ export function CreateSalesScreen({navigation}) {
             value={element.quantity}
             onChange={value => {
               let tempCart = [];
-              productList.map(item => {
+              state.productList.map(item => {
                 tempCart.push(item);
               });
               tempCart[index].quantity = value;
-              setProductList(tempCart);
+              dispatch({
+                type: 'SET_PRODUCTLIST',
+                productList: tempCart,
+              });
             }}
             totalWidth={((windowWidth - 8 * 2) * 2) / 10}
             totalHeight={30}
@@ -234,12 +277,15 @@ export function CreateSalesScreen({navigation}) {
             color="red"
             onPress={() => {
               let tempCart = [];
-              productList.map((item, key) => {
+              state.productList.map((item, key) => {
                 if (key !== index) {
                   tempCart.push(item);
                 }
               });
-              setProductList(tempCart);
+              dispatch({
+                type: 'SET_PRODUCTLIST',
+                productList: tempCart,
+              });
             }}
           />
         </View>
@@ -248,27 +294,36 @@ export function CreateSalesScreen({navigation}) {
   });
 
   const getProductInfo = async () => {
-    const productInfo = await apiFetchProductInfo(
-      salesData.productID,
-      staffData.token,
+    const [status, result] = await apiFetchProductInfo(
+      state.productID,
+      state.token,
     );
+    console.log(result);
     let tempCart = [];
-    productList.map(element => {
-      tempCart.push(element);
-    });
-    tempCart.push({
-      productID: productInfo[0].productID,
-      cCode: productInfo[0].cCode,
-      name: productInfo[0].name,
-      brand: productInfo[0].brand,
-      price: productInfo[0].price,
-      quantity: 1,
-    });
-    setProductList(tempCart);
-    handleItemChange('');
+    if (status === 200) {
+      state.productList.map(element => {
+        tempCart.push(element);
+      });
+      tempCart.push({
+        productID: result[0].productID,
+        cCode: result[0].cCode,
+        name: result[0].name,
+        brand: result[0].brand,
+        price: result[0].price,
+        quantity: 1,
+      });
+      dispatch({
+        type: 'SET_PRODUCTLIST',
+        productList: tempCart,
+      });
+      handleItemChange('');
+    } else {
+      handleItemChange('');
+      Alert.alert('錯誤', result.error);
+    }
   };
 
-  const modalRenderItem = productList.map((item, index) => {
+  const modalRenderItem = state.productList.map((item, index) => {
     return (
       <View
         key={'modalMainContainer' + index.toString()}
@@ -303,6 +358,19 @@ export function CreateSalesScreen({navigation}) {
     );
   });
 
+  if (state.isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          //backgroundColor: 'transparent',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <View style={styles.viewContainer}>
@@ -313,18 +381,22 @@ export function CreateSalesScreen({navigation}) {
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
-              toggleOrderTime();
+              dispatch({
+                type: 'TOGGLE_ORDERTIME',
+                pickerMode: 'datetime',
+                display: 'spinner',
+              });
             }}>
             <Text style={styles.text}>
-              {salesData.date} {salesData.time}
+              {state.date} {state.time}
             </Text>
           </TouchableOpacity>
           <DateTimePickerModal
-            display={datePicker.display}
-            isVisible={datePicker.isVisible}
-            mode={datePicker.pickerMode}
+            display={state.display}
+            isVisible={state.isVisible}
+            mode={state.pickerMode}
             onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
+            onCancel={() => dispatch({type: 'HIDE_DATE_PICKER'})}
           />
           <View style={styles.btn}>
             <TextInput
@@ -332,13 +404,13 @@ export function CreateSalesScreen({navigation}) {
               textAlign={'center'}
               placeholder="貨品號碼 / 條碼"
               placeholderTextColor="grey"
-              value={salesData.productID}
+              value={state.productID}
               onChangeText={val => handleItemChange(val)}
             />
             <TouchableOpacity
               style={styles.addBtn}
               onPress={() => {
-                if (salesData.productID !== '') {
+                if (state.productID !== '') {
                   getProductInfo();
                 }
               }}>
@@ -350,7 +422,7 @@ export function CreateSalesScreen({navigation}) {
             </TouchableOpacity>
           </View>
           <View style={styles.productList}>
-            {productList.length === 0 ? (
+            {state.productList.length === 0 ? (
               <Text>貨品籃尚未有任何貨品！</Text>
             ) : (
               renderItem
@@ -362,6 +434,7 @@ export function CreateSalesScreen({navigation}) {
               textAlign={'center'}
               placeholder="總價錢"
               placeholderTextColor="grey"
+              value={state.price}
               onChangeText={val => handlePriceChange(val)}
             />
           </View>
@@ -369,9 +442,10 @@ export function CreateSalesScreen({navigation}) {
             <View style={{flex: 7.5}}>
               <Text style={{marginLeft: 10, fontSize: 14}}>
                 收據：{' '}
-                {response === '未選擇任何相片' || response.didCancel === true
+                {state.response === '未選擇任何相片' ||
+                state.response.didCancel === true
                   ? '未選擇任何相片'
-                  : response.assets[0].fileName}
+                  : state.response.assets[0].fileName}
               </Text>
             </View>
             <View
@@ -391,7 +465,12 @@ export function CreateSalesScreen({navigation}) {
                     cameraType: 'back',
                     saveToPhotos: true,
                   };
-                  launchCamera(options, setResponse);
+                  launchCamera(options, val => {
+                    dispatch({
+                      type: 'LAUNCH_CAMERA',
+                      response: val,
+                    });
+                  });
                 }}
               />
               <MaterialIcons
@@ -403,7 +482,12 @@ export function CreateSalesScreen({navigation}) {
                   const options = {
                     mediaType: 'photo',
                   };
-                  launchImageLibrary(options, setResponse);
+                  launchImageLibrary(options, val => {
+                    dispatch({
+                      type: 'LAUNCH_CAMERA',
+                      response: val,
+                    });
+                  });
                 }}
               />
             </View>
@@ -414,15 +498,19 @@ export function CreateSalesScreen({navigation}) {
               textAlign={'center'}
               placeholder="備註"
               placeholderTextColor="grey"
+              value={state.notice}
               onChangeText={val => handleNoticeChange(val)}
             />
           </View>
           <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={state.modalVisible}
             onRequestClose={() => {
-              setModalVisible(!modalVisible);
+              dispatch({
+                type: 'TOGGLE_MODAL',
+                modalVisible: !state.modalVisible,
+              });
             }}>
             <View style={styles.modalContainer}>
               <View style={styles.modalView}>
@@ -438,7 +526,9 @@ export function CreateSalesScreen({navigation}) {
                       <Text style={styles.text}>商鋪： </Text>
                     </View>
                     <View style={styles.modalTextRightPanel}>
-                      <Text style={styles.text}>{staffData.shopID}</Text>
+                      <Text style={styles.text}>
+                        {state.location} - {state.shopID}
+                      </Text>
                     </View>
                   </View>
                   <View style={styles.modalTextContainer}>
@@ -447,7 +537,7 @@ export function CreateSalesScreen({navigation}) {
                     </View>
                     <View style={styles.modalTextRightPanel}>
                       <Text style={styles.text}>
-                        {salesData.date} {salesData.time}
+                        {state.date} {state.time}
                       </Text>
                     </View>
                   </View>
@@ -470,7 +560,7 @@ export function CreateSalesScreen({navigation}) {
                       <Text style={styles.text}>總價： </Text>
                     </View>
                     <View style={styles.modalTextRightPanel}>
-                      <Text style={styles.text}>${salesData.price}</Text>
+                      <Text style={styles.text}>${state.price}</Text>
                     </View>
                   </View>
                   <View style={styles.modalTextContainer}>
@@ -478,7 +568,7 @@ export function CreateSalesScreen({navigation}) {
                       <Text style={styles.text}>備註： </Text>
                     </View>
                     <View style={styles.modalTextRightPanel}>
-                      <Text style={styles.text}>{salesData.notice}</Text>
+                      <Text style={styles.text}>{state.notice}</Text>
                     </View>
                   </View>
                 </ScrollView>
@@ -486,13 +576,25 @@ export function CreateSalesScreen({navigation}) {
                 <View style={styles.modalBtnContainer}>
                   <TouchableOpacity
                     style={styles.modalBtn}
-                    onPress={() => setModalVisible(!modalVisible)}>
+                    onPress={() =>
+                      dispatch({
+                        type: 'TOGGLE_MODAL',
+                        modalVisible: !state.modalVisible,
+                      })
+                    }>
                     <Text style={styles.modalText}>取消</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.modalBtn}
                     onPress={() => {
-                      setModalVisible(!modalVisible);
+                      dispatch({
+                        type: 'TOGGLE_MODAL',
+                        modalVisible: !state.modalVisible,
+                      });
+                      dispatch({
+                        type: 'UPLOADING_RECORD',
+                        isLoading: true,
+                      });
                       createRecord();
                     }}>
                     <Text style={styles.modalText}>新增</Text>

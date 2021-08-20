@@ -2,13 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  SectionList,
-  FlatList,
-} from 'react-native';
+import {View, Text, SectionList, FlatList} from 'react-native';
 import styles from '../../style/sales/recordDisplay_style.js';
 
 export function SalesRecordScreen({route, navigation}) {

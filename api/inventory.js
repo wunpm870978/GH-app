@@ -7,11 +7,11 @@ export const apiFetchShopInventory = async (searchQuery, district, token) => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
     },
     body: JSON.stringify({
       productID: searchQuery,
       district: district,
-      token: token,
     }),
     redirect: 'follow',
   };
@@ -32,20 +32,23 @@ export const apiFetchProductInfo = async (searchQuery, token) => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
     },
     body: JSON.stringify({
       productID: searchQuery,
-      token: token,
     }),
     redirect: 'follow',
   };
   try {
     const response = await fetch(url, requestOptions);
     const result = await response.json();
-    return result;
+    const status = await response.status;
+    return [status, result];
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.log('inventory', error);
+    let status = 404;
+    let result = error;
+    return [status, result];
   }
 };
 
@@ -56,11 +59,11 @@ export const apiFetchProductQty = async (searchQuery, shopID, token) => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
     },
     body: JSON.stringify({
       productID: searchQuery,
       shopID: shopID,
-      token: token,
     }),
     redirect: 'follow',
   };

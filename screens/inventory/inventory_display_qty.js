@@ -44,10 +44,6 @@ export function DisplayQuantityScreen({route, navigation}) {
     quantity: 0,
   });
 
-  //<----------------  FlatList------------------------>
-
-  //<-------------------------------------------------------->
-
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container}>

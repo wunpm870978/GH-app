@@ -22,16 +22,103 @@ import NumericInput from 'react-native-numeric-input';
 import {apiDiscountCalculation} from '../../api/order.js';
 
 export function createOrderScreen({route, navigation}) {
+  //-----------------redux----------------------------//
+  const InitialState = {
+    phoneNo: '',
+    email: '',
+    memberID: '',
+    staffData: '',
+    paymentMethod: '',
+    deliveryMethod: '',
+    discountType: '',
+    promotionCode: '',
+    totalPrice: 0,
+    productList: [],
+    isSelectPayment: true,
+    isSelectDiscountCode: true,
+  };
+  const reducer = (prevState, action) => {
+    switch (action.type) {
+      case 'SCAN_QR_CODE':
+        return {
+          ...prevState,
+          phoneNo: action.phoneNo,
+          email: action.email,
+          memberID: action.memberID,
+        };
+      case 'INPUT_MEMBER_PHONENO':
+        return {
+          ...prevState,
+          phoneNo: action.phoneNo,
+        };
+      case 'INPUT_MEMBER_EMAIL':
+        return {
+          ...prevState,
+          email: action.email,
+        };
+      case 'INPUT_MEMBER_ID':
+        return {
+          ...prevState,
+          memberID: action.memberID,
+        };
+      case 'GET_STAFF_INFO':
+        return {
+          ...prevState,
+          staffData: action.staffData,
+        };
+      case 'ADD_TO_CART':
+        return {
+          ...prevState,
+          totalPrice: action.totalPrice,
+          productList: action.productList,
+        };
+      case 'SET_PAYMENT_METHOD':
+        return {
+          ...prevState,
+          paymentMethod: action.paymentMethod,
+          isSelectPayment: true,
+        };
+      case 'SET_DISCOUNT_TYPE':
+        return {
+          ...prevState,
+          discountType: action.discountType,
+          promotionCode: action.promotionCode,
+          isSelectDiscountCode: true,
+        };
+      case 'INPUT_PROMOTION_CODE':
+        return {
+          ...prevState,
+          promotionCode: action.promotionCode,
+        };
+      case 'RESET_PAYMENT_SELECT':
+        return {
+          ...prevState,
+          isSelectPayment: false,
+        };
+      case 'RESET_DISCOUNT_SELECT':
+        return {
+          ...prevState,
+          isSelectDiscountCode: false,
+        };
+      default:
+        break;
+    }
+  };
+  const [state, dispatch] = React.useReducer(reducer, InitialState);
+
   //------------------------------hooks--------------------------//
   React.useLayoutEffect(() => {
-    setStaffData(route.params?.staffData);
+    dispatch({
+      type: 'GET_STAFF_INFO',
+      staffData: route.params?.staffData,
+    });
   }, [navigation, route.params?.staffData]);
 
   React.useEffect(() => {
     if (route.params?.productToCart) {
       let tempCart = [];
       let tempPrice = 0;
-      productList.map(element => {
+      state.productList.map(element => {
         tempPrice += element.quantity * element.price;
         tempCart.push(element);
       });
@@ -39,19 +126,23 @@ export function createOrderScreen({route, navigation}) {
       tempPrice +=
         route.params?.productToCart.quantity *
         route.params?.productToCart.price;
-      setTotalPrice(tempPrice);
-      setProductList(tempCart);
+      dispatch({
+        type: 'ADD_TO_CART',
+        totalPrice: tempPrice,
+        productList: tempCart,
+      });
     }
   }, [route.params?.productToCart]);
   React.useEffect(() => {
     if (route.params?.qrInfo) {
       // Post updated, do something with `route.params.qrInfo`
       // For example, send the post to the server
-      setMemCheck(state => ({
+      dispatch({
+        type: 'SCAN_QR_CODE',
         phoneNo: JSON.parse(route.params?.qrInfo).phone,
         email: JSON.parse(route.params?.qrInfo).email,
-        memberId: JSON.parse(route.params?.qrInfo).id,
-      }));
+        memberID: JSON.parse(route.params?.qrInfo).id,
+      });
     }
   }, [route.params?.qrInfo]);
   React.useEffect(() => {
@@ -79,32 +170,9 @@ export function createOrderScreen({route, navigation}) {
   }, []);
   //-----------------------------------------------------------//
   const windowWidth = Dimensions.get('window').width;
-  const [staffData, setStaffData] = React.useState({
-    staffID: '',
-    district: '',
-    position: '',
-    token: '',
-    shopID: '',
-  });
-  const [check, setCheck] = React.useState({
-    paymentMethod: '',
-    deliveryMethod: '',
-    discountType: '',
-  });
-  const [promotionCode, setPromotionCode] = React.useState('');
-  const [totalPrice, setTotalPrice] = React.useState(0);
-  const [productList, setProductList] = React.useState([]);
-  const [isSelectPayment, setIsSelectPayment] = React.useState(true);
-  const [isSelectDelivery, setIsSelectDelivery] = React.useState(true);
-  const [isSelectDiscountCode, setIsSelectDiscountCode] = React.useState(true);
+  //const [isSelectDelivery, setIsSelectDelivery] = React.useState(true);
 
-  const [memCheck, setMemCheck] = React.useState({
-    phoneNo: '',
-    email: '',
-    memberId: '',
-  });
-
-  const renderItem = productList.map((element, index) => {
+  const renderItem = state.productList.map((element, index) => {
     return (
       <View
         key={'mainContainer' + index.toString()}
@@ -124,15 +192,18 @@ export function createOrderScreen({route, navigation}) {
             onChange={value => {
               let tempCart = [];
               let tempPrice = 0;
-              productList.map(item => {
+              state.productList.map(item => {
                 tempCart.push(item);
               });
               tempCart[index].quantity = value;
               tempCart.map(item => {
                 tempPrice += item.quantity * item.price;
               });
-              setTotalPrice(tempPrice);
-              setProductList(tempCart);
+              dispatch({
+                type: 'ADD_TO_CART',
+                totalPrice: tempPrice,
+                productList: tempCart,
+              });
             }}
             totalWidth={((windowWidth - 8 * 2) * 2) / 10}
             totalHeight={30}
@@ -156,14 +227,17 @@ export function createOrderScreen({route, navigation}) {
             onPress={() => {
               let tempCart = [];
               let tempPrice = 0;
-              productList.map((item, key) => {
+              state.productList.map((item, key) => {
                 if (key !== index) {
                   tempPrice += item.quantity * item.price;
                   tempCart.push(item);
                 }
               });
-              setTotalPrice(tempPrice);
-              setProductList(tempCart);
+              dispatch({
+                type: 'ADD_TO_CART',
+                totalPrice: tempPrice,
+                productList: tempCart,
+              });
             }}
           />
         </View>
@@ -172,39 +246,39 @@ export function createOrderScreen({route, navigation}) {
   });
 
   const handlePhoneNoChange = val => {
-    setMemCheck({
-      ...check,
+    dispatch({
+      type: 'INPUT_MEMBER_PHONENO',
       phoneNo: val,
     });
   };
 
   const handleEmailChange = val => {
-    setMemCheck({
-      ...memCheck,
+    dispatch({
+      type: 'INPUT_MEMBER_EMAIL',
       email: val,
     });
   };
 
   const handleMemberIdChange = val => {
-    setMemCheck({
-      ...check,
-      memberId: val,
+    dispatch({
+      type: 'INPUT_MEMBER_ID',
+      memberID: val,
     });
   };
 
   const handlePromotionCodeChange = val => {
-    setPromotionCode(val);
+    dispatch({type: 'INPUT_PROMOTION_CODE', promotionCode: val});
   };
 
-  const emptySelectHandle = (goods, pay, delivery, discountType) => {
+  const emptySelectHandle = (goods, pay, discountType) => {
     if (pay === '') {
-      setIsSelectPayment(false);
+      dispatch({type: 'RESET_PAYMENT_SELECT'});
     }
     /* if (delivery === '') {
       setIsSelectDelivery(false);
     } */
     if (discountType === '') {
-      setIsSelectDiscountCode(false);
+      dispatch({type: 'RESET_DISCOUNT_SELECT'});
     }
     if (
       goods.length === 0 ||
@@ -214,14 +288,14 @@ export function createOrderScreen({route, navigation}) {
     ) {
       Alert.alert('注意！', '資料不能漏空！');
     } else {
-      if (check.discountType === 'none') {
+      if (discountType === 'none') {
         navigation.replace('Payment', {
-          productList: productList,
-          staffData: staffData,
-          paymentMethod: check.paymentMethod,
-          deliveryMethod: check.deliveryMethod,
-          discountType: check.discountType,
-          totalPrice: totalPrice,
+          productList: state.productList,
+          staffData: state.staffData,
+          paymentMethod: state.paymentMethod,
+          //deliveryMethod: check.deliveryMethod,
+          discountType: state.discountType,
+          totalPrice: state.totalPrice,
         });
       } else {
         discountCalculation();
@@ -231,22 +305,24 @@ export function createOrderScreen({route, navigation}) {
 
   const discountCalculation = async () => {
     const [status, result] = await apiDiscountCalculation(
-      productList,
-      promotionCode,
+      state.productList,
+      state.promotionCode,
     );
     if (status === 404) {
       console.log(JSON.stringify(result));
     } else {
       console.log(result);
       navigation.replace('Payment', {
-        productList: productList,
-        staffData: staffData,
-        paymentMethod: check.paymentMethod,
-        deliveryMethod: check.deliveryMethod,
-        totalPrice: totalPrice,
-        discountType: check.discountType,
-        promotionCode: promotionCode,
-        freeItem: result,
+        productList: result.productList,
+        staffData: state.staffData,
+        paymentMethod: state.paymentMethod,
+        //deliveryMethod: check.deliveryMethod,
+        totalPrice: state.totalPrice,
+        finalPrice: result.tempTotalPrice,
+        discountType: state.discountType,
+        promotionCode: state.promotionCode,
+        freeProductList: result.freeProductList,
+        detail: result.detail,
       });
     }
   };
@@ -268,7 +344,7 @@ export function createOrderScreen({route, navigation}) {
                   style={styles.inputText}
                   placeholder="電話號碼..."
                   placeholderTextColor="#707070"
-                  value={memCheck.phoneNo}
+                  value={state.phoneNo}
                   onChangeText={val => handlePhoneNoChange(val)}
                 />
               </View>
@@ -277,7 +353,7 @@ export function createOrderScreen({route, navigation}) {
                   style={styles.inputText}
                   placeholder="Email..."
                   placeholderTextColor="#707070"
-                  value={memCheck.email}
+                  value={state.email}
                   onChangeText={val => handleEmailChange(val)}
                 />
               </View>
@@ -286,7 +362,7 @@ export function createOrderScreen({route, navigation}) {
                   style={styles.inputText}
                   placeholder="會員號碼..."
                   placeholderTextColor="#707070"
-                  value={memCheck.memberId}
+                  value={state.memberID}
                   onChangeText={val => handleMemberIdChange(val)}
                 />
               </View>
@@ -348,7 +424,7 @@ export function createOrderScreen({route, navigation}) {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            {productList.length === 0 ? (
+            {state.productList.length === 0 ? (
               <Text style={{color: '#707070', marginBottom: 10}}>
                 購物籃尚未有任何貨品！
               </Text>
@@ -357,7 +433,7 @@ export function createOrderScreen({route, navigation}) {
             )}
           </View>
           <View style={styles.borderLine} />
-          {productList.length === 0 ? null : (
+          {state.productList.length === 0 ? null : (
             <View
               style={{
                 width: '100%',
@@ -374,7 +450,7 @@ export function createOrderScreen({route, navigation}) {
                 />
                 <Text>總價錢</Text>
               </View>
-              <Text style={{marginRight: 20}}>$ {totalPrice}</Text>
+              <Text style={{marginRight: 20}}>$ {state.totalPrice}</Text>
             </View>
           )}
         </View>
@@ -388,15 +464,14 @@ export function createOrderScreen({route, navigation}) {
             <Text style={styles.text}>AliPay</Text>
             <TouchableOpacity
               onPress={() => {
-                setCheck({
-                  ...check,
-                  paymentMethod: 'Aliselect',
+                dispatch({
+                  type: 'SET_PAYMENT_METHOD',
+                  paymentMethod: 'Alipay',
                 });
-                setIsSelectPayment(true);
               }}>
               <MaterialCommunityIcons
                 name={
-                  check.paymentMethod === 'Aliselect'
+                  state.paymentMethod === 'Alipay'
                     ? 'record-circle-outline'
                     : 'circle-outline'
                 }
@@ -408,15 +483,14 @@ export function createOrderScreen({route, navigation}) {
             <Text style={styles.text}>WeChat Pay</Text>
             <TouchableOpacity
               onPress={() => {
-                setCheck({
-                  ...check,
-                  paymentMethod: 'Wechatselect',
+                dispatch({
+                  type: 'SET_PAYMENT_METHOD',
+                  paymentMethod: 'WechatPay',
                 });
-                setIsSelectPayment(true);
               }}>
               <MaterialCommunityIcons
                 name={
-                  check.paymentMethod === 'Wechatselect'
+                  state.paymentMethod === 'WechatPay'
                     ? 'record-circle-outline'
                     : 'circle-outline'
                 }
@@ -428,15 +502,14 @@ export function createOrderScreen({route, navigation}) {
             <Text style={styles.text}>現金/八達通</Text>
             <TouchableOpacity
               onPress={() => {
-                setCheck({
-                  ...check,
-                  paymentMethod: 'Cashselect',
+                dispatch({
+                  type: 'SET_PAYMENT_METHOD',
+                  paymentMethod: 'Cash',
                 });
-                setIsSelectPayment(true);
               }}>
               <MaterialCommunityIcons
                 name={
-                  check.paymentMethod === 'Cashselect'
+                  state.paymentMethod === 'Cash'
                     ? 'record-circle-outline'
                     : 'circle-outline'
                 }
@@ -448,15 +521,14 @@ export function createOrderScreen({route, navigation}) {
             <Text style={styles.text}>VISA</Text>
             <TouchableOpacity
               onPress={() => {
-                setCheck({
-                  ...check,
-                  paymentMethod: 'VISAselect',
+                dispatch({
+                  type: 'SET_PAYMENT_METHOD',
+                  paymentMethod: 'VISA',
                 });
-                setIsSelectPayment(true);
               }}>
               <MaterialCommunityIcons
                 name={
-                  check.paymentMethod === 'VISAselect'
+                  state.paymentMethod === 'VISA'
                     ? 'record-circle-outline'
                     : 'circle-outline'
                 }
@@ -464,8 +536,10 @@ export function createOrderScreen({route, navigation}) {
               />
             </TouchableOpacity>
           </View>
-          {isSelectPayment ? null : (
-            <Text style={styles.warnText}>付款方式不能為空！</Text>
+          {state.isSelectPayment ? null : (
+            <View style={styles.warnTextContainer}>
+              <Text style={styles.warnText}>付款方式不能為空！</Text>
+            </View>
           )}
         </View>
         {/* Delivery edit---------------------------------------------------- */}
@@ -550,19 +624,19 @@ export function createOrderScreen({route, navigation}) {
                 style={{height: 40, color: 'black', width: '100%'}}
                 placeholder="會員號碼..."
                 placeholderTextColor="#003f5c"
-                value={check.memberId}
+                value={state.memberID}
                 onChangeText={val => handleMemberIdChange(val)}
               />
             </View>
             <TouchableOpacity
               onPress={() => {
-                setCheck({
-                  ...check,
+                dispatch({
+                  type: 'SET_DISCOUNT_TYPE',
                   discountType: 'member',
+                  promotionCode: '',
                 });
-                setIsSelectDiscountCode(true);
               }}>
-              {check.discountType === 'member' ? (
+              {state.discountType === 'member' ? (
                 <MaterialCommunityIcons
                   name="record-circle-outline"
                   size={20}
@@ -578,19 +652,18 @@ export function createOrderScreen({route, navigation}) {
                 style={{height: 40, color: 'black', width: '100%'}}
                 placeholder="優惠碼..."
                 placeholderTextColor="#003f5c"
-                value={promotionCode}
+                value={state.promotionCode}
                 onChangeText={val => handlePromotionCodeChange(val)}
               />
             </View>
             <TouchableOpacity
               onPress={() => {
-                setCheck({
-                  ...check,
+                dispatch({
+                  type: 'SET_DISCOUNT_TYPE',
                   discountType: 'promotion',
                 });
-                setIsSelectDiscountCode(true);
               }}>
-              {check.discountType === 'promotion' ? (
+              {state.discountType === 'promotion' ? (
                 <MaterialCommunityIcons
                   name="record-circle-outline"
                   size={20}
@@ -604,13 +677,13 @@ export function createOrderScreen({route, navigation}) {
             <Text style={styles.text}>暫未提供</Text>
             <TouchableOpacity
               onPress={() => {
-                setCheck({
-                  ...check,
+                dispatch({
+                  type: 'SET_DISCOUNT_TYPE',
                   discountType: 'none',
+                  promotionCode: '',
                 });
-                setIsSelectDiscountCode(true);
               }}>
-              {check.discountType === 'none' ? (
+              {state.discountType === 'none' ? (
                 <MaterialCommunityIcons
                   name="record-circle-outline"
                   size={20}
@@ -620,8 +693,10 @@ export function createOrderScreen({route, navigation}) {
               )}
             </TouchableOpacity>
           </View>
-          {isSelectDiscountCode ? null : (
-            <Text style={styles.warnText}>優惠選項不能為空！</Text>
+          {state.isSelectDiscountCode ? null : (
+            <View style={styles.warnTextContainer}>
+              <Text style={styles.warnText}>優惠選項不能為空！</Text>
+            </View>
           )}
         </View>
         {/* Shop staff Column edit------------------------------------------- */}
@@ -635,14 +710,14 @@ export function createOrderScreen({route, navigation}) {
               />
               <Text style={styles.textTitle}>職員編號</Text>
             </View>
-            <Text style={styles.text}>{staffData.staffID}</Text>
+            <Text style={styles.text}>{state.staffData.staffID}</Text>
           </View>
           <View style={styles.itemRow}>
             <View style={styles.detailRow}>
               <Entypo name="shop" color="#EA5E2A" size={25} />
               <Text style={styles.textTitle}>分店編號</Text>
             </View>
-            <Text style={styles.text}>{staffData.shopID}</Text>
+            <Text style={styles.text}>{state.staffData.shopID}</Text>
           </View>
         </View>
         {/* Comfirm button edit------------------------------------------- */}
@@ -653,7 +728,6 @@ export function createOrderScreen({route, navigation}) {
             marginBottom: 40,
             alignItems: 'center',
             justifyContent: 'center',
-            //backgroundColor: 'yellow',
           }}>
           <TouchableOpacity
             style={styles.confirmButton}
@@ -678,13 +752,11 @@ export function createOrderScreen({route, navigation}) {
             style={styles.confirmButton}
             onPress={() => {
               emptySelectHandle(
-                productList,
-                check.paymentMethod,
-                check.deliveryMethod,
-                check.discountType,
+                state.productList,
+                state.paymentMethod,
+                //check.deliveryMethod,
+                state.discountType,
               );
-              // console.log(promotionCode);
-              // console.log(productList);
             }}>
             <Text style={{color: 'white'}}>確認</Text>
           </TouchableOpacity>
