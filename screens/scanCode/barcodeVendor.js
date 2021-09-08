@@ -19,8 +19,11 @@ import BarcodeMask from 'react-native-barcode-mask';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NumericInput from 'react-native-numeric-input';
 import {apiBarcode} from '../../api/codeScanner.js';
+import {LoginState, OrderState, OrderMethod} from '../../api/authText.js';
 
 export function BarcodeVendorScreen({route, navigation}) {
+  const orderState = React.useContext(OrderState);
+  const {addToCart} = React.useContext(OrderMethod);
   const [barcodeData, setBarcodeDate] = React.useState({
     barcode: '',
     type: '',
@@ -243,9 +246,10 @@ export function BarcodeVendorScreen({route, navigation}) {
             }}
             onPress={() => {
               if (productInfo.name !== '' && productInfo.quantity !== 0) {
-                navigation.navigate('OrderCreate', {
-                  productToCart: productInfo,
-                });
+                let tempCart = orderState.productList;
+                tempCart.push(productInfo);
+                addToCart(tempCart, productInfo.price * productInfo.quantity);
+                navigation.navigate('OrderCreate');
               }
             }}>
             <Text style={{fontSize: 16, color: 'white'}}>加入購物籃</Text>

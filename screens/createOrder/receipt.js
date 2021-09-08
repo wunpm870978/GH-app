@@ -10,20 +10,19 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import styles from '../../style/orders/receipt_style.js';
+import {LoginState} from '../../api/authText.js';
 
 export function ReceiptScreen({route, navigation}) {
   React.useLayoutEffect(() => {
     if (route.params?.receipt) {
       setReceipt(state => route.params?.receipt[0]);
       setProductList(state => route.params?.receipt[1]);
-      setStaffData(state => route.params?.receipt[2]);
-      setDiscountType(state => route.params?.receipt[3]);
+      setDiscountType(state => route.params?.receipt[2]);
     }
   }, [navigation, route.params?.receipt]);
-
+  const loginState = React.useContext(LoginState);
   const [receipt, setReceipt] = React.useState('');
   const [productList, setProductList] = React.useState([]);
-  const [staffData, setStaffData] = React.useState('');
   const [discountType, setDiscountType] = React.useState('none');
   const renderItem = productList.map((element, index) => {
     if (element.price !== null) {
@@ -97,7 +96,7 @@ export function ReceiptScreen({route, navigation}) {
         </View>
         <View style={styles.receiptRow}>
           <Text style={{fontSize: 16}}>店鋪： </Text>
-          <Text style={{fontSize: 16}}>{staffData.shopID}</Text>
+          <Text style={{fontSize: 16}}>{loginState.shopID}</Text>
         </View>
         <View style={styles.receiptRow}>
           <Text style={{fontSize: 16}}>日期： </Text>
@@ -109,7 +108,7 @@ export function ReceiptScreen({route, navigation}) {
         </View>
         <View style={styles.receiptRow}>
           <Text style={{fontSize: 16}}>收款員： </Text>
-          <Text style={{fontSize: 16}}>{staffData.staffID}</Text>
+          <Text style={{fontSize: 16}}>{loginState.staffID}</Text>
         </View>
         <View style={{width: '90%', borderWidth: 0.5, marginVertical: 15}} />
         <View style={styles.renderMainContainer}>

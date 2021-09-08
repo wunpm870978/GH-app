@@ -15,8 +15,10 @@ import styles from '../../style/orders/payment_style.js';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {apiUploadPaymentRecord} from '../../api/order.js';
+import {LoginState} from '../../api/authText.js';
 
 export function PaymentScreen({route, navigation}) {
+  const loginState = React.useContext(LoginState);
   const InitialState = {
     togglePanel: false,
     memberInfo: [],
@@ -220,7 +222,8 @@ export function PaymentScreen({route, navigation}) {
           state.discountType,
           null,
           null,
-          state.staffData,
+          loginState.shopID,
+          loginState.staffID,
           state.totalPrice,
         );
         if (status === 200) {
@@ -237,7 +240,8 @@ export function PaymentScreen({route, navigation}) {
           state.discountType,
           state.promotionCode,
           state.freeProductList,
-          state.staffData,
+          loginState.shopID,
+          loginState.staffID,
           state.finalPrice,
         );
         if (status === 200) {

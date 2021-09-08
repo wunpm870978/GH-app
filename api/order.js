@@ -9,7 +9,8 @@ export const apiUploadPaymentRecord = async (
   discountType,
   promotionCode,
   freeProductList,
-  staffData,
+  shopID,
+  staffID,
   totalPrice,
 ) => {
   const url = 'http://172.104.44.182:3000/uploadPaymentRecord';
@@ -26,7 +27,8 @@ export const apiUploadPaymentRecord = async (
   data.append('discountType', discountType);
   data.append('promotionCode', promotionCode);
   data.append('freeProductList', JSON.stringify(freeProductList));
-  data.append('staffData', JSON.stringify(staffData));
+  data.append('shopID', shopID);
+  data.append('staffID', staffID);
   data.append('totalPrice', totalPrice);
 
   const requestOptions = {

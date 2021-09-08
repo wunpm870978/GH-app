@@ -90,7 +90,7 @@ export function SearchInventoryScreen({route, navigation}) {
     }
   };
   const getData = async () => {
-    if (state.position === 'manager') {
+    if (state.position === 'supermanager') {
       const inventoryInfo = await apiFetchShopInventory(
         state.searchQuery,
         state.district,
@@ -107,6 +107,28 @@ export function SearchInventoryScreen({route, navigation}) {
         navigation.navigate('DisplayInventory', {
           inventoryInfo: inventoryInfo,
           productInfo: result[0],
+          staffData: {
+            staffID: state.staffID,
+            district: state.district,
+            location: state.location,
+            position: state.position,
+            token: state.token,
+            shopID: state.shopID,
+          },
+        });
+      }
+    } else if (state.position === 'manager') {
+      const quantityInfo = await apiFetchProductQty(
+        state.searchQuery,
+        state.shopID,
+        state.token,
+      );
+      dispatch({type: 'FETCHING_API', isLoading: false});
+      if (quantityInfo.hasOwnProperty('error')) {
+        Alert.alert('Error', quantityInfo.error, [{text: 'OK'}]);
+      } else {
+        navigation.navigate('DisplayQuantity', {
+          quantityInfo: quantityInfo[0],
           staffData: {
             staffID: state.staffID,
             district: state.district,
@@ -159,16 +181,16 @@ export function SearchInventoryScreen({route, navigation}) {
           <TouchableOpacity
             style={styles.barcodeRow}
             onPress={() => {
-              navigation.push('BarcodeObtain');
+              getData();
             }}>
-            <Text style={styles.text}>掃描貨品</Text>
+            <Text style={styles.text}>查詢貨品</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.enquiryRow}
             onPress={() => {
-              getData();
+              navigation.push('BarcodeObtain');
             }}>
-            <Text style={styles.text}>查詢貨品</Text>
+            <Text style={styles.text}>掃描貨品</Text>
           </TouchableOpacity>
         </View>
       </View>

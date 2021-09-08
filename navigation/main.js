@@ -4,39 +4,56 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {LoginStackNavigator, HomeStackNavigator} from './stacks.js';
 import {View, ActivityIndicator} from 'react-native';
-import {AuthContext} from '../api/authText.js';
+import {AuthContext, LoginState} from '../api/authText.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Main = () => {
   const initialLoginState = {
     isLoading: true,
-    userName: null,
-    userToken: null,
+    staffID: null,
+    shopID: null,
+    position: null,
+    location: null,
+    district: null,
+    token: null,
   };
 
   const loginReducer = (prevState, action) => {
     switch (action.type) {
       case 'RETRIEVE_TOKEN':
-        return {...prevState, userToken: action.token, isLoading: false};
+        return {
+          ...prevState,
+          token: action.token,
+          staffID: action.staffID,
+          shopID: action.shopID,
+          position: action.position,
+          location: action.location,
+          district: action.district,
+          isLoading: false,
+        };
       case 'LOGIN':
         return {
           ...prevState,
-          userName: action.id,
-          userToken: action.token,
+          staffID: action.staffID,
+          token: action.token,
           isLoading: false,
         };
       case 'LOGOUT':
         return {
           ...prevState,
-          userName: null,
-          userToken: null,
+          staffID: null,
+          token: null,
           isLoading: false,
+          shopID: null,
+          position: null,
+          location: null,
+          district: null,
         };
       case 'REGISTER':
         return {
           ...prevState,
-          userName: action.id,
-          userToken: action.token,
+          staffID: action.staffID,
+          token: action.token,
           isLoading: false,
         };
     }
@@ -50,8 +67,6 @@ export const Main = () => {
   const authContext = React.useMemo(
     () => ({
       signIn: async foundUser => {
-        const userToken = String(foundUser[0].userToken);
-        const userName = foundUser[0].staffID;
         try {
           await AsyncStorage.setItem('staffID', foundUser[0].staffID);
           await AsyncStorage.setItem('userToken', foundUser[0].userToken);
@@ -63,7 +78,15 @@ export const Main = () => {
           console.log(e);
         }
         console.log('foundUser: ', foundUser);
-        dispatch({type: 'LOGIN', id: userName, token: userToken});
+        dispatch({
+          type: 'LOGIN',
+          staffID: foundUser[0].staffID,
+          token: foundUser[0].userToken,
+          shopID: foundUser[0].shop_id,
+          location: foundUser[0].location,
+          district: foundUser[0].district,
+          position: foundUser[0].position,
+        });
       },
       signOut: async () => {
         try {
@@ -110,14 +133,16 @@ export const Main = () => {
   }
 
   return (
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        {loginState.userToken !== null ? (
-          <HomeStackNavigator />
-        ) : (
-          <LoginStackNavigator />
-        )}
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <LoginState.Provider value={loginState}>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          {loginState.token !== null ? (
+            <HomeStackNavigator />
+          ) : (
+            <LoginStackNavigator />
+          )}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </LoginState.Provider>
   );
 };

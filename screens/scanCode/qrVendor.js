@@ -15,20 +15,23 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
 //import BarcodeMask from 'react-native-barcode-mask';
 import Anticon from 'react-native-vector-icons/AntDesign';
+import {OrderMethod} from '../../api/authText.js';
 
 export function QRScanVendorScreen({route, navigation}) {
   const screenWidth = Dimensions.get('screen').width.toString();
+  const {handleQRMembership} = React.useContext(OrderMethod);
   return (
     <QRCodeScanner
       onRead={e => {
         // Linking.openURL(e.data).catch(err =>
         //   console.error('An error occured', err),
         // );
-        navigation.navigate({
-          name: 'Order',
-          params: {qrInfo: e.data},
-          merge: true,
-        });
+        handleQRMembership(
+          JSON.parse(e.data).phone,
+          JSON.parse(e.data).email,
+          JSON.parse(e.data).id,
+        );
+        navigation.navigate('Order');
       }}
       //containerStyle={{marginBottom: 50}}
       //cameraProps should be before cameraStyle

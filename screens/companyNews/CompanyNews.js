@@ -12,23 +12,22 @@ import {
 } from 'react-native';
 import styles from '../../style/companyNews_style.js';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
+import {LoginState} from '../../api/authText.js';
 
 export function CompanyNewsScreen({route, navigation}) {
   React.useLayoutEffect(() => {
     apiNews();
   }, [navigation]);
+  const loginState = React.useContext(LoginState);
   const [apiData, setApiData] = React.useState(null);
   const apiNews = async () => {
-    let userToken = '';
-    userToken = await AsyncStorage.getItem('userToken');
     const requestOptions = {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + userToken,
+        Authorization: 'Bearer ' + loginState.token,
       },
       redirect: 'follow',
     };
@@ -51,10 +50,6 @@ export function CompanyNewsScreen({route, navigation}) {
   }, []);
 
   const Item = React.memo(function Item(props) {
-    console.log('---------------------------------');
-    console.log('I am break line');
-    console.log('---------------------------------');
-    console.log(JSON.stringify(props));
     let year = moment(props.data.createDate).get('year');
     let month = moment(props.data.createDate).get('month') + 1;
     let day = moment(props.data.createDate).get('date');

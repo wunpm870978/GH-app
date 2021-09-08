@@ -27,6 +27,7 @@ import {CompanyNewsScreen} from '../screens/companyNews/CompanyNews.js';
 import {NewsContentScreen} from '../screens/companyNews/content.js';
 import {MallMainScreen} from '../screens/mall/filter.js';
 import {ProductListScreen} from '../screens/mall/productList.js';
+import {OrderProvider} from './orderProvider.js';
 
 const Stack = createStackNavigator();
 
@@ -55,7 +56,7 @@ export const HomeStackNavigator = () => {
       />
       <Stack.Screen
         name="Order"
-        component={OrderStackNavigator}
+        component={OrderProvider}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -142,7 +143,8 @@ export const MallStackNavigator = () => {
     </Stack.Navigator>
   );
 };
-export const OrderStackNavigator = () => {
+
+/* export const OrderStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="OrderCreate">
       <Stack.Screen
@@ -152,8 +154,6 @@ export const OrderStackNavigator = () => {
           title: '創建訂單',
           headerStyle: {
             backgroundColor: '#F4F5F8',
-            //borderBottomWidth: 1,
-            //borderColor: '#A9CA81',
           },
           headerTintColor: '#EA5E2A',
         }}
@@ -204,7 +204,8 @@ export const OrderStackNavigator = () => {
       />
     </Stack.Navigator>
   );
-};
+}; */
+
 export const DiscountStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="DiscountInfo">

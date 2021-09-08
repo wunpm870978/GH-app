@@ -68,27 +68,27 @@ export function BarcodeScanScreen({navigation}) {
     }
   };
   const apiHandle = async () => {
-    const response = await apiBarcode(barcodeData.barcode);
-    console.log(response[1][0]);
-    if (response[1][0].hasOwnProperty('error')) {
-      Alert.alert('Error', response.error, [{text: 'OK'}]);
+    //const response = await apiBarcode(barcodeData.barcode);
+    const [status, result] = await apiBarcode(barcodeData.barcode);
+    if (status !== 200) {
+      Alert.alert('Error', result.error, [{text: 'OK'}]);
     } else {
-      if (response[1][0].detail !== null) {
+      if (result.detail !== null) {
         setProductInfo({
           ...productInfo,
-          name: response[1][0].name,
-          brand: response[1][0].brand,
-          price: response[1][0].price,
-          promotion: response[1][0].detail,
-          startDate: response[1][0].startDate,
-          endDate: response[1][0].endDate,
+          name: result[0].name,
+          brand: result[0].brand,
+          price: result[0].price,
+          promotion: result[0].detail,
+          startDate: result[0].startDate,
+          endDate: result[0].endDate,
         });
       } else {
         setProductInfo({
           ...productInfo,
-          name: response[1][0].name,
-          brand: response[1][0].brand,
-          price: response[1][0].price,
+          name: result[0].name,
+          brand: result[0].brand,
+          price: result[0].price,
           promotion: '--',
           startDate: '--',
           endDate: '--',
@@ -134,9 +134,9 @@ export function BarcodeScanScreen({navigation}) {
             name="barcode-outline"
             size={25}
             style={styles.icon}
-            onPress={() => {
-              console.log(barcodeData.barcode);
-            }}
+            // onPress={() => {
+            //   console.log(barcodeData.barcode);
+            // }}
           />
           <TextInput
             placeholder="貨品條碼/編號..."

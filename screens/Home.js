@@ -10,13 +10,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {MyStatusBar} from '../style/StatusBar.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthContext} from '../api/authText.js';
+import {AuthContext, LoginState} from '../api/authText.js';
 
 export function HomeScreen({route, navigation}) {
   React.useLayoutEffect(() => {
     loadStaff();
   }, [navigation]);
-
+  const loginState = React.useContext(LoginState);
   const {signOut} = React.useContext(AuthContext);
   const loadStaff = async () => {
     try {
