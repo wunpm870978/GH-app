@@ -7,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: '#F4F5F8',
     alignItems: 'center',
-    //justifyContent: 'center',
+    justifyContent: 'center',
   },
   viewContainer: {
     flex: 1,
@@ -19,14 +19,19 @@ export default StyleSheet.create({
   scroll: {
     flex: 1,
     width: '100%',
+    marginVertical: 20,
     //backgroundColor: 'yellow',
+  },
+  scrollContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   btn: {
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 10,
     height: 50,
-    width: '100%',
+    width: '85%',
     borderColor: 'grey',
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,6 +54,12 @@ export default StyleSheet.create({
     width: '80%',
     fontSize: 18,
   },
+  textInputWithPicker: {
+    height: 50,
+    color: '#707070',
+    width: '50%',
+    fontSize: 18,
+  },
   confirmBtnContainer: {
     width: '100%',
     height: 50,
@@ -65,6 +76,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#A9CA81',
+    marginBottom: 20,
   },
   addBtn: {
     backgroundColor: '#A9CA81',
@@ -73,72 +85,5 @@ export default StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  //<----------------------Modal--------------------------->
-  modalContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalView: {
-    height: 350,
-    paddingVertical: 20,
-    width: windowWidth - windowWidth * 0.08 - 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderColor: '#D3D0D0',
-    borderWidth: 1,
-  },
-  modalTitleContainer: {
-    height: 30,
-    width: '100%',
-    alignItems: 'center',
-  },
-  modalTextContainer: {
-    height: 30,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    //backgroundColor: 'green',
-    marginBottom: 1,
-  },
-  modalTextLeftPanel: {
-    flex: 3.5,
-    alignItems: 'flex-end',
-    paddingRight: 10,
-    //justifyContent: 'center',
-    //backgroundColor: 'cyan',
-  },
-  modalTextRightPanel: {
-    flex: 6.5,
-    //alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    // backgroundColor: 'orange',
-  },
-  modalBtnContainer: {
-    marginTop: 10,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  modalBtn: {
-    borderRadius: 5,
-    height: 30,
-    width: 70,
-    backgroundColor: '#A9CA81',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 20,
-  },
-  modalText: {
-    color: 'white',
-  },
-  modalTitle: {
-    color: 'grey',
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });

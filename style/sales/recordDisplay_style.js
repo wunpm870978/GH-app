@@ -15,7 +15,6 @@ export default StyleSheet.create({
     marginVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'center',
     paddingVertical: 10,
   },
   btn: {
@@ -36,13 +35,11 @@ export default StyleSheet.create({
   },
   sectionHeader: {
     height: 30,
-    //width: '90%',
     width: windowWidth * 0.92 - 30,
     //backgroundColor: 'yellow',
     justifyContent: 'center',
   },
   section: {
-    //width: '100%',
     width: windowWidth * 0.92 - 40,
     //backgroundColor: 'green',
     marginVertical: 5,
@@ -57,5 +54,30 @@ export default StyleSheet.create({
     width: windowWidth * 0.92 - 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  overallHeader: {
+    width: windowWidth * 0.92 - 30,
+    marginBottom: 5,
+  },
+  overallTitle: {
+    width: '100%',
+    flexDirection: 'row',
+    height: 30,
+    alignItems: 'center',
+  },
+  overallContent: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  overallContentA: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  overallText: {
+    flex: 1,
+    fontSize: 15,
   },
 });

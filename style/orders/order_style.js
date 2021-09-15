@@ -20,10 +20,7 @@ export default StyleSheet.create({
     width: '100%',
     paddingVertical: 10,
     paddingHorizontal: 8,
-    //flexWrap: 'wrap',
-    //alignItems: 'center',
     backgroundColor: 'white',
-    //justifyContent: 'flex-start',
   },
   infoRow: {
     flexDirection: 'row',
@@ -33,7 +30,6 @@ export default StyleSheet.create({
   },
   inputView: {
     width: '100%',
-    //borderRadius: 20,
     borderWidth: 1,
     borderColor: '#D3D0D0',
     height: 50,
@@ -68,12 +64,12 @@ export default StyleSheet.create({
   },
   //--------------cart info-----------------//
   cartContainer: {
-    flex: 6,
+    flex: 6.5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  cartContainer1: {
+  cartSearchButton: {
     flex: 3.5,
     flexDirection: 'row',
     alignItems: 'center',
@@ -81,14 +77,47 @@ export default StyleSheet.create({
     backgroundColor: '#A9CA81',
     borderRadius: 5,
   },
+  cartListTitleContainer: {
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: 35,
+  },
+  cartListContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartListPriceContainer: {
+    width: '100%',
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  productName: {
+    flexDirection: 'row',
+    flex: 5.5,
+  },
+  productQuantity: {
+    flexDirection: 'row',
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  productDelete: {
+    flexDirection: 'row-reverse',
+    flex: 2.5,
+  },
   borderLine: {
     borderWidth: 0.5,
     width: '100%',
     marginBottom: 10,
     borderColor: '#707070',
   },
+  //----------------------------------//
   itemRow: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingVertical: 5,
     flexDirection: 'row',
     alignItems: 'center',
@@ -96,15 +125,33 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   membershipInputView: {
+    flexDirection: 'row',
     width: '75%',
     backgroundColor: '#F4F5F8',
     borderRadius: 20,
     height: 40,
-    marginLeft: -12,
     marginBottom: 5,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     padding: 10,
+  },
+  disocuntInputView: {
+    flexDirection: 'row',
+    width: '75%',
+    backgroundColor: '#F4F5F8',
+    borderRadius: 20,
+    height: 40,
+    marginBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 10,
+  },
+  confirmButtonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    marginBottom: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   confirmButton: {
     height: 50,
@@ -148,15 +195,12 @@ export default StyleSheet.create({
   renderContainer: {
     flexDirection: 'row',
     width: '100%',
-    //height: 40,
-    //backgroundColor: 'yellow',
     marginBottom: 10,
   },
   renderTextContainer: {
     flex: 5.5,
     width: ((windowWidth - 8 * 2) * 5.5) / 10,
     justifyContent: 'center',
-    //flexWrap: 'wrap',
   },
   renderIconContainer: {
     flexDirection: 'row-reverse',

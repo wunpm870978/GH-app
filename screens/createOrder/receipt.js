@@ -53,7 +53,6 @@ export function ReceiptScreen({route, navigation}) {
       return null;
     }
   });
-
   const renderFreeItem = productList.map((element, index) => {
     if (element.price === null) {
       return (
@@ -82,7 +81,14 @@ export function ReceiptScreen({route, navigation}) {
       return null;
     }
   });
-
+  const receiptHeader = (title, value) => {
+    return (
+      <View style={styles.receiptRow}>
+        <Text style={{fontSize: 16}}>{title}</Text>
+        <Text style={{fontSize: 16}}>{value}</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.mainContainer}>
       <ScrollView
@@ -94,22 +100,10 @@ export function ReceiptScreen({route, navigation}) {
         <View style={styles.receiptTitle}>
           <Text style={{fontSize: 20}}>收據</Text>
         </View>
-        <View style={styles.receiptRow}>
-          <Text style={{fontSize: 16}}>店鋪： </Text>
-          <Text style={{fontSize: 16}}>{loginState.shopID}</Text>
-        </View>
-        <View style={styles.receiptRow}>
-          <Text style={{fontSize: 16}}>日期： </Text>
-          <Text style={{fontSize: 16}}>{receipt.date}</Text>
-        </View>
-        <View style={styles.receiptRow}>
-          <Text style={{fontSize: 16}}>時間： </Text>
-          <Text style={{fontSize: 16}}>{receipt.time}</Text>
-        </View>
-        <View style={styles.receiptRow}>
-          <Text style={{fontSize: 16}}>收款員： </Text>
-          <Text style={{fontSize: 16}}>{loginState.staffID}</Text>
-        </View>
+        {receiptHeader('店鋪： ', loginState.shopID)}
+        {receiptHeader('日期： ', receipt.date)}
+        {receiptHeader('時間： ', receipt.time)}
+        {receiptHeader('收款員： ', loginState.staffID)}
         <View style={{width: '90%', borderWidth: 0.5, marginVertical: 15}} />
         <View style={styles.renderMainContainer}>
           <View style={styles.renderTextContainer}>

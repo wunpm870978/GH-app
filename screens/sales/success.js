@@ -12,8 +12,6 @@ import {
 const windowWidth = Dimensions.get('window').width;
 
 export function SuccessScreen({route, navigation}) {
-  React.useLayoutEffect(() => {}, [navigation]);
-
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container}>

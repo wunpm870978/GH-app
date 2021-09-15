@@ -6,8 +6,12 @@ export const apiCreateSalesRecord = async (
   date,
   time,
   price,
+  paymentMethod,
+  promotionCode,
   productList,
+  remark,
   shopID,
+  staffID,
 ) => {
   const url = 'http://172.104.44.182:3000/sales/createSales';
   const data = new FormData();
@@ -20,9 +24,13 @@ export const apiCreateSalesRecord = async (
 
   data.append('date', date);
   data.append('time', time);
-  data.append('shopID', shopID);
   data.append('totalPrice', price);
+  data.append('paymentMethod', paymentMethod);
+  data.append('promotionCode', promotionCode);
+  data.append('remark', remark);
   data.append('productList', JSON.stringify(productList));
+  data.append('shopID', shopID);
+  data.append('staffID', staffID);
 
   const requestOptions = {
     method: 'POST',
@@ -41,18 +49,12 @@ export const apiCreateSalesRecord = async (
   } catch (error) {
     console.log('test', error);
     let status = 404;
-    let result = error;
-    return [status, result];
+    return [status, JSON.stringify(error)];
   }
 };
 
-export const apiFetchSalesRecord = async (
-  orderDateStart,
-  orderDateEnd,
-  shopID,
-  token,
-) => {
-  const url = 'http://172.104.44.182:3000/sales/checkSales';
+export const apiFetchSalesRecord = async (startDate, endDate, shopID, link) => {
+  const url = 'http://172.104.44.182:3000/sales/' + link;
   const requestOptions = {
     method: 'POST',
     headers: {
@@ -60,17 +62,17 @@ export const apiFetchSalesRecord = async (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      orderDateStart: orderDateStart,
-      orderDateEnd: orderDateEnd,
+      startDate: startDate,
+      endDate: endDate,
       shopID: shopID,
-      token: token,
     }),
     redirect: 'follow',
   };
   try {
     const response = await fetch(url, requestOptions);
     const result = await response.json();
-    return result;
+    const status = await response.status;
+    return [status, result];
   } catch (error) {
     console.log(error);
     throw error;

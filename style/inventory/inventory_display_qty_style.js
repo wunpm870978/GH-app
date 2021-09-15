@@ -17,23 +17,6 @@ export default StyleSheet.create({
     //justifyContent: 'center',
   },
   //<--------------product info page css---------------->
-  btnContainer: {
-    marginTop: 10,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    //backgroundColor: 'purple',
-  },
-  btnBack: {
-    borderWidth: 0.5,
-    borderColor: 'black',
-    borderRadius: 5,
-    width: 200,
-    height: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
   productInfoRow: {
     flexDirection: 'row',
     marginHorizontal: 15,
@@ -80,18 +63,10 @@ export default StyleSheet.create({
   copyBtnContainer: {
     height: 25, //30
     width: 70,
-    //backgroundColor: 'orange',
+    backgroundColor: '#A9CA81',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
     borderRadius: 5,
-    borderColor: '#F1948A',
-  },
-  copyBtn: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   productTextContainer: {
     height: 25,
@@ -103,62 +78,47 @@ export default StyleSheet.create({
     height: 30,
     fontSize: 14,
   },
-  //<--------------SectionList AND FlatList------------->
-  //<---------------collapse item css-------------------->
-  collapseToggleContainer: {
-    borderWidth: 1,
-    borderColor: '#F1948A',
-    borderRadius: 10,
-    marginTop: 10,
-    height: 50,
-    width: windowWidth - windowWidth * 0.08 - 30,
-    //backgroundColor: 'blue',
-    flexDirection: 'row',
+  //------------inventory list css---------------------//
+  bottomContainer: {
+    flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-  },
-  collapsible: {
-    width: windowWidth - windowWidth * 0.08 - 30,
-    alignItems: 'center',
-  },
-  renderItemListContainer: {
-    paddingHorizontal: 10,
-    width: windowWidth - windowWidth * 0.08 - 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    //backgroundColor: 'green',
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    //backgroundColor: 'cyan',
-    height: 30,
-    paddingHorizontal: 10,
-    //marginBottom: 5,
-    width: '100%',
-    //width: windowWidth - windowWidth * 0.08 - 30,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  //<-----------------Bottom part------------------->
-  //<---------------- inventory request------------->
-  viewBtn: {
     marginTop: 20,
-    width: windowWidth - windowWidth * 0.08 - 30,
-    //backgroundColor: 'white',
-    alignItems: 'center',
+  },
+  inventoryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '85%',
+    height: 35,
+    borderWidth: 1,
+  },
+  inventoryShop: {
+    flex: 7,
+    paddingHorizontal: 20,
     justifyContent: 'center',
   },
-  sendBtn: {
-    borderWidth: 1,
-    borderRadius: 10,
-    marginTop: 10,
-    height: 50,
-    width: '100%',
-    borderColor: '#00FF00',
-    //backgroundColor: '#00FF00',
+  inventoryQuantity: {
+    flex: 3,
+    justifyContent: 'center',
+  },
+  inventoryListContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    width: '85%',
+    height: 35,
+  },
+  //request change inventory css-------------------//
+  requestContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: 50,
+  },
+  requestBtn: {
+    width: 120,
+    height: 45,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 15,
+    backgroundColor: '#A9CA81',
   },
 });

@@ -11,14 +11,9 @@ export default StyleSheet.create({
   topRow: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    //justifyContent: 'center',
     width: '100%',
     height: 45,
-    //borderBottomLeftRadius: 15,
-    //borderBottomRightRadius: 15,
     borderBottomWidth: 2,
-    //borderLeftWidth: 0.5,
-    //borderRightWidth: 0.5,
     borderColor: '#A9CA81',
   },
   topRowView: {

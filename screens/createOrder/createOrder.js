@@ -19,8 +19,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import NumericInput from 'react-native-numeric-input';
-import {apiDiscountCalculation} from '../../api/order.js';
+import {apiDiscountCalculation, apiPromotionPicker} from '../../api/order.js';
 import {LoginState, OrderState, OrderMethod} from '../../api/authText.js';
+import {Picker} from '@react-native-picker/picker';
 
 export function createOrderScreen({route, navigation}) {
   //-----------------redux----------------------------//
@@ -36,7 +37,11 @@ export function createOrderScreen({route, navigation}) {
     toggleDiscountErrorMsg,
     togglePaymentErrorMsg,
     addToCartV1,
+    getResultFromCalculation,
+    setPromotionPicker,
+    selectPromotionPicker,
   } = React.useContext(OrderMethod);
+
   //------------------------------hooks--------------------------//
   /* React.useEffect(() => {
     const backAction = () => {
@@ -61,6 +66,9 @@ export function createOrderScreen({route, navigation}) {
     );
     return () => backHandler.remove();
   }, []); */
+  React.useEffect(() => {
+    getPromotionPicker();
+  }, [navigation]);
   //-----------------------------------------------------------//
   const windowWidth = Dimensions.get('window').width;
 
@@ -130,38 +138,22 @@ export function createOrderScreen({route, navigation}) {
   });
 
   const emptySelectHandle = (goods, pay, discountType) => {
-    if (pay === '') {
-      togglePaymentErrorMsg();
-    }
-    /* if (delivery === '') {
-      setIsSelectDelivery(false);
-    } */
-    if (discountType === '') {
-      toggleDiscountErrorMsg();
-    }
-    if (
-      goods.length === 0 ||
-      pay === '' ||
-      //delivery === '' ||
-      discountType === ''
-    ) {
+    if (goods.length === 0 || pay === '' || discountType === '') {
+      if (pay === '') {
+        togglePaymentErrorMsg();
+      }
+      if (discountType === '') {
+        toggleDiscountErrorMsg();
+      }
       Alert.alert('注意！', '資料不能漏空！');
     } else {
       if (discountType === 'none') {
-        navigation.replace('Payment', {
-          productList: orderState.productList,
-          //staffData: state.staffData,
-          paymentMethod: orderState.paymentMethod,
-          //deliveryMethod: check.deliveryMethod,
-          discountType: orderState.discountType,
-          totalPrice: orderState.totalPrice,
-        });
+        navigation.replace('Payment');
       } else {
         discountCalculation();
       }
     }
   };
-
   const discountCalculation = async () => {
     const [status, result] = await apiDiscountCalculation(
       orderState.productList,
@@ -171,21 +163,70 @@ export function createOrderScreen({route, navigation}) {
       console.log(JSON.stringify(result));
     } else {
       console.log(result);
-      navigation.replace('Payment', {
-        productList: result.productList,
-        //staffData: state.staffData,
-        paymentMethod: orderState.paymentMethod,
-        //deliveryMethod: check.deliveryMethod,
-        totalPrice: orderState.totalPrice,
-        finalPrice: result.tempTotalPrice,
-        discountType: orderState.discountType,
-        promotionCode: orderState.promotionCode,
-        freeProductList: result.freeProductList,
-        detail: result.detail,
-      });
+      getResultFromCalculation(result);
+      navigation.replace('Payment');
     }
   };
-
+  const getPromotionPicker = async () => {
+    const [status, result] = await apiPromotionPicker();
+    console.log(result);
+    if (status === 200) {
+      setPromotionPicker(result);
+    }
+  };
+  //---------render radio buttons and error msg alert-------------------//
+  const paymentRadioButton = (itemName, expectedSelected) => {
+    return (
+      <View style={styles.itemRow}>
+        <Text style={styles.text}>{itemName}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            handlePaymentType(expectedSelected);
+          }}>
+          <MaterialCommunityIcons
+            name={
+              orderState.paymentMethod === expectedSelected
+                ? 'record-circle-outline'
+                : 'circle-outline'
+            }
+            size={20}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  const discountRadioButton = (expectedSelected, discountCode) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          handleDiscountType(expectedSelected, discountCode);
+        }}>
+        {orderState.discountType === expectedSelected ? (
+          <MaterialCommunityIcons name="record-circle-outline" size={20} />
+        ) : (
+          <MaterialCommunityIcons name="circle-outline" size={20} />
+        )}
+      </TouchableOpacity>
+    );
+  };
+  const pickerRender = orderState.promotionPickerList.map((item, index) => {
+    return (
+      <Picker.Item
+        key={'picker' + index.toString()}
+        label={item.detail}
+        value={item.promotionCode}
+      />
+    );
+  });
+  const emptySelectedAlert = (selected, alertMsg) => {
+    if (selected === false) {
+      return (
+        <View style={styles.warnTextContainer}>
+          <Text style={styles.warnText}>{alertMsg}</Text>
+        </View>
+      );
+    }
+  };
   return (
     <View style={styles.container}>
       {/* panel InputView edit---------------------------------------------------- */}
@@ -245,7 +286,7 @@ export function createOrderScreen({route, navigation}) {
               <Text style={styles.textTitle}>貨品列表</Text>
             </View>
             <TouchableOpacity
-              style={styles.cartContainer1}
+              style={styles.cartSearchButton}
               onPress={() => {
                 navigation.push('FindPorduct');
               }}>
@@ -254,35 +295,17 @@ export function createOrderScreen({route, navigation}) {
             </TouchableOpacity>
             <View style={{flex: 0.5}} />
           </View>
-          <View
-            style={{
-              paddingVertical: 5,
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '100%',
-              height: 35,
-            }}>
-            <View style={{flexDirection: 'row', flex: 5.5}}>
+          <View style={styles.cartListTitleContainer}>
+            <View style={styles.productName}>
               <Text style={styles.text}>名稱</Text>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 2,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.productQuantity}>
               <Text style={styles.text}>數量</Text>
             </View>
-            <View style={{flexDirection: 'row-reverse', flex: 2.5}} />
+            <View style={styles.productDelete} />
           </View>
           <View style={styles.borderLine} />
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+          <View style={styles.cartListContainer}>
             {orderState.productList.length === 0 ? (
               <Text style={{color: '#707070', marginBottom: 10}}>
                 購物籃尚未有任何貨品！
@@ -293,13 +316,7 @@ export function createOrderScreen({route, navigation}) {
           </View>
           <View style={styles.borderLine} />
           {orderState.productList.length === 0 ? null : (
-            <View
-              style={{
-                width: '100%',
-                height: 40,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
+            <View style={styles.cartListPriceContainer}>
               <View style={{flexDirection: 'row'}}>
                 <Ionicons
                   name="ios-calculator"
@@ -319,75 +336,11 @@ export function createOrderScreen({route, navigation}) {
             <MaterialIcons name="payment" color="#EA5E2A" size={30} />
             <Text style={styles.textTitle}>付款方式</Text>
           </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.text}>AliPay</Text>
-            <TouchableOpacity
-              onPress={() => {
-                handlePaymentType('Alipay');
-              }}>
-              <MaterialCommunityIcons
-                name={
-                  orderState.paymentMethod === 'Alipay'
-                    ? 'record-circle-outline'
-                    : 'circle-outline'
-                }
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.text}>WeChat Pay</Text>
-            <TouchableOpacity
-              onPress={() => {
-                handlePaymentType('WechatPay');
-              }}>
-              <MaterialCommunityIcons
-                name={
-                  orderState.paymentMethod === 'WechatPay'
-                    ? 'record-circle-outline'
-                    : 'circle-outline'
-                }
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.text}>現金/八達通</Text>
-            <TouchableOpacity
-              onPress={() => {
-                handlePaymentType('Cash');
-              }}>
-              <MaterialCommunityIcons
-                name={
-                  orderState.paymentMethod === 'Cash'
-                    ? 'record-circle-outline'
-                    : 'circle-outline'
-                }
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.text}>VISA</Text>
-            <TouchableOpacity
-              onPress={() => {
-                handlePaymentType('VISA');
-              }}>
-              <MaterialCommunityIcons
-                name={
-                  orderState.paymentMethod === 'VISA'
-                    ? 'record-circle-outline'
-                    : 'circle-outline'
-                }
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
-          {orderState.isSelectPayment ? null : (
-            <View style={styles.warnTextContainer}>
-              <Text style={styles.warnText}>付款方式不能為空！</Text>
-            </View>
-          )}
+          {paymentRadioButton('AliPay', 'Alipay')}
+          {paymentRadioButton('WeChat Pay', 'WechatPay')}
+          {paymentRadioButton('現金/八達通', 'Cash')}
+          {paymentRadioButton('VISA', 'VISA')}
+          {emptySelectedAlert(orderState.isSelectPayment, '付款方式不能為空！')}
         </View>
         {/* Discount code edit---------------------------------------------------- */}
         <View style={styles.infoColumn}>
@@ -405,64 +358,36 @@ export function createOrderScreen({route, navigation}) {
                 onChangeText={val => handleMemberIdChange(val)}
               />
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                handleDiscountType('member', '');
-              }}>
-              {orderState.discountType === 'member' ? (
-                <MaterialCommunityIcons
-                  name="record-circle-outline"
-                  size={20}
-                />
-              ) : (
-                <MaterialCommunityIcons name="circle-outline" size={20} />
-              )}
-            </TouchableOpacity>
+            {discountRadioButton('member', '')}
           </View>
           <View style={styles.itemRow}>
-            <View style={styles.membershipInputView}>
+            <View style={styles.disocuntInputView}>
               <TextInput
-                style={{height: 40, color: 'black', width: '100%'}}
+                style={{height: 40, color: 'black', flex: 5}}
                 placeholder="優惠碼..."
                 placeholderTextColor="#003f5c"
                 value={orderState.promotionCode}
                 onChangeText={val => handlePromotionCodeChange(val)}
               />
+              <Picker
+                style={{flex: 5}}
+                selectedValue={orderState.promotionCode}
+                onValueChange={selectedPicker =>
+                  selectPromotionPicker(selectedPicker)
+                }>
+                <Picker.Item label="選擇" value={null} />
+                {pickerRender}
+              </Picker>
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                handleDiscountType('promotion', orderState.promotionCode);
-              }}>
-              {orderState.discountType === 'promotion' ? (
-                <MaterialCommunityIcons
-                  name="record-circle-outline"
-                  size={20}
-                />
-              ) : (
-                <MaterialCommunityIcons name="circle-outline" size={20} />
-              )}
-            </TouchableOpacity>
+            {discountRadioButton('promotion', orderState.promotionCode)}
           </View>
           <View style={styles.itemRow}>
             <Text style={styles.text}>暫未提供</Text>
-            <TouchableOpacity
-              onPress={() => {
-                handleDiscountType('none', '');
-              }}>
-              {orderState.discountType === 'none' ? (
-                <MaterialCommunityIcons
-                  name="record-circle-outline"
-                  size={20}
-                />
-              ) : (
-                <MaterialCommunityIcons name="circle-outline" size={20} />
-              )}
-            </TouchableOpacity>
+            {discountRadioButton('none', '')}
           </View>
-          {orderState.isSelectDiscountCode ? null : (
-            <View style={styles.warnTextContainer}>
-              <Text style={styles.warnText}>優惠選項不能為空！</Text>
-            </View>
+          {emptySelectedAlert(
+            orderState.isSelectDiscountCode,
+            '優惠選項不能為空！',
           )}
         </View>
         {/* Shop staff Column edit------------------------------------------- */}
@@ -480,21 +405,21 @@ export function createOrderScreen({route, navigation}) {
           </View>
           <View style={styles.itemRow}>
             <View style={styles.detailRow}>
-              <Entypo name="shop" color="#EA5E2A" size={25} />
+              <Entypo
+                name="shop"
+                color="#EA5E2A"
+                size={25}
+                onPress={() => {
+                  console.log(orderState.discountPicker);
+                }}
+              />
               <Text style={styles.textTitle}>分店編號</Text>
             </View>
             <Text style={styles.text}>{loginState.shopID}</Text>
           </View>
         </View>
         {/* Comfirm button edit------------------------------------------- */}
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            marginBottom: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+        <View style={styles.confirmButtonContainer}>
           <TouchableOpacity
             style={styles.confirmButton}
             onPress={() => {
@@ -520,7 +445,6 @@ export function createOrderScreen({route, navigation}) {
               emptySelectHandle(
                 orderState.productList,
                 orderState.paymentMethod,
-                //check.deliveryMethod,
                 orderState.discountType,
               );
             }}>

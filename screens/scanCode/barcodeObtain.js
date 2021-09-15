@@ -14,8 +14,10 @@ import {
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
+import {InventoryMethod} from '../../api/authText.js';
 
 export function BarcodeObtainScreen({route, navigation}) {
+  const {onChangeSearch} = React.useContext(InventoryMethod);
   const [barcodeData, setBarcodeDate] = React.useState({
     barcode: '',
     type: '',
@@ -49,11 +51,8 @@ export function BarcodeObtainScreen({route, navigation}) {
               barcodes[0].type !== 'QR_CODE'
             ) {
               handleChange(barcodes[0]);
-              navigation.navigate({
-                name: 'CheckInventory',
-                params: {barcodeInfo: barcodes[0].data},
-                merge: true,
-              });
+              onChangeSearch(barcodes[0].data);
+              navigation.navigate('CheckInventory');
             }
             console.log(barcodes[0]);
           }}>

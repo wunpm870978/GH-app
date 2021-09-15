@@ -106,12 +106,7 @@ export function HomeScreen({route, navigation}) {
         <View style={styles.btnTopRow}>
           <TouchableOpacity
             style={styles.btn}
-            onPress={() =>
-              navigation.push('Order', {
-                screen: 'OrderCreate',
-                params: {staffData: staffData},
-              })
-            }>
+            onPress={() => navigation.push('Order')}>
             <FontAwesome5
               name="pencil-alt"
               size={40}
@@ -220,15 +215,15 @@ export function HomeScreen({route, navigation}) {
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
-              //navigation.push('Inventory');
+              Alert.alert('即將推出!');
             }}>
-            <MaterialIcons
-              name="inventory"
+            <Ionicons
+              name="md-person-add"
               size={40}
               style={(styles.icon, {paddingBottom: 10})}
               color="#EA5E2A"
             />
-            <Text style={{color: '#EA5E2A'}}>倉庫</Text>
+            <Text style={{color: '#EA5E2A'}}>創建會員</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}

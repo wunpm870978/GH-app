@@ -76,3 +76,24 @@ export const apiDiscountCalculation = async (productList, promotionCode) => {
     throw error;
   }
 };
+
+export const apiPromotionPicker = async () => {
+  const url = 'http://172.104.44.182:3000/promotion/promotionPickerList';
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+  };
+  try {
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();
+    const status = await response.status;
+    return [status, result];
+  } catch (error) {
+    console.log('test', error);
+    throw error;
+  }
+};

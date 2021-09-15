@@ -21,10 +21,17 @@ export const OrderProvider = () => {
     deliveryMethod: '',
     discountType: '',
     promotionCode: '',
+    detail: '',
     totalPrice: 0,
+    priceWithDiscount: 0,
+    promotionPickerList: [],
+    discountPicker: '',
     productList: [],
+    freeProductList: [],
     isSelectPayment: true,
     isSelectDiscountCode: true,
+    togglePanel: false,
+    response: '未選擇任何相片',
   };
   const reducer = (prevState, action) => {
     switch (action.type) {
@@ -49,6 +56,16 @@ export const OrderProvider = () => {
         return {
           ...prevState,
           memberID: action.memberID,
+        };
+      case 'SET_PROMOTION_PICKER':
+        return {
+          ...prevState,
+          promotionPickerList: action.promotionPickerList,
+        };
+      case 'SELECT_PROMOTION_PICKER':
+        return {
+          ...prevState,
+          promotionCode: action.promotionCode,
         };
       case 'GET_STAFF_INFO':
         return {
@@ -95,6 +112,24 @@ export const OrderProvider = () => {
           ...prevState,
           isSelectDiscountCode: false,
         };
+      case 'SET_FIELDS_AFTER_CALCULATION':
+        return {
+          ...prevState,
+          productList: action.productList,
+          priceWithDiscount: action.priceWithDiscount,
+          freeProductList: action.freeProductList,
+          detail: action.detail,
+        };
+      case 'TOGGLE_PAYMENT_PANEL':
+        return {
+          ...prevState,
+          togglePanel: action.togglePanel,
+        };
+      case 'LAUNCH_CAMERA':
+        return {
+          ...prevState,
+          response: action.response,
+        };
       default:
         break;
     }
@@ -102,6 +137,7 @@ export const OrderProvider = () => {
   const [state, dispatch] = React.useReducer(reducer, InitialState);
   const orderContext = React.useMemo(
     () => ({
+      //---------------------createOrder.js-------------//
       //handle membership field
       handlePhoneNoChange: val => {
         dispatch({
@@ -120,6 +156,16 @@ export const OrderProvider = () => {
           type: 'INPUT_MEMBER_ID',
           memberID: val,
         });
+      },
+      //set promotion picker list, select promotion picker
+      setPromotionPicker: promotionPickerList => {
+        dispatch({
+          type: 'SET_PROMOTION_PICKER',
+          promotionPickerList: promotionPickerList,
+        });
+      },
+      selectPromotionPicker: selected => {
+        dispatch({type: 'SELECT_PROMOTION_PICKER', promotionCode: selected});
       },
       //get menbership data from qrcode scanner
       handleQRMembership: (phoneNo, email, memberID) => {
@@ -173,6 +219,30 @@ export const OrderProvider = () => {
       toggleDiscountErrorMsg: () => {
         dispatch({type: 'RESET_DISCOUNT_SELECT'});
       },
+      //handle discount calculations
+      getResultFromCalculation: result => {
+        dispatch({
+          type: 'SET_FIELDS_AFTER_CALCULATION',
+          productList: result.productList,
+          priceWithDiscount: result.tempTotalPrice,
+          freeProductList: result.freeProductList,
+          detail: result.detail,
+        });
+      },
+      //toggle payment panel
+      handlePaymentPanel: val => {
+        dispatch({
+          type: 'TOGGLE_PAYMENT_PANEL',
+          togglePanel: val,
+        });
+      },
+      //handle selected photo from phone
+      setSelectedPhoto: response => {
+        dispatch({
+          type: 'LAUNCH_CAMERA',
+          response: response,
+        });
+      },
     }),
     [state.totalPrice],
   );
@@ -180,13 +250,6 @@ export const OrderProvider = () => {
     <OrderState.Provider value={state}>
       <OrderMethod.Provider value={orderContext}>
         <Stack.Navigator initialRouteName="OrderCreate">
-          {/* <Stack.Group
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#F4F5F8',
-          },
-          headerTintColor: '#EA5E2A',
-        }}> */}
           <Stack.Screen
             name="OrderCreate"
             component={createOrderScreen}
@@ -242,7 +305,6 @@ export const OrderProvider = () => {
               headerTintColor: '#EA5E2A',
             }}
           />
-          {/* </Stack.Group> */}
         </Stack.Navigator>
       </OrderMethod.Provider>
     </OrderState.Provider>

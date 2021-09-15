@@ -36,6 +36,10 @@ export const Main = () => {
           ...prevState,
           staffID: action.staffID,
           token: action.token,
+          shopID: action.shopID,
+          position: action.position,
+          location: action.location,
+          district: action.district,
           isLoading: false,
         };
       case 'LOGOUT':

@@ -14,74 +14,25 @@ import NumericInput from 'react-native-numeric-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../../style/inventory/inventory_display_style.js';
 import io from 'socket.io-client';
+import {
+  LoginState,
+  InventoryState,
+  InventoryMethod,
+} from '../../api/authText.js';
 
 const windowWidth = Dimensions.get('window').width;
 
-export function ModalCart({
-  toggleStatus,
-  productID,
-  staffID,
-  location,
-  shopID,
-  maxQty,
-  toggleModal,
-}) {
-  const InitialState = {
-    modalVisible: false,
-    productID: '',
-    staffID: '',
-    location: '',
-    shopID: '',
-    quantity: 1,
-    currentDate: '',
-  };
-  const reducer = (prevState, action) => {
-    switch (action.type) {
-      case 'SET_MODAL_INFO':
-        return {
-          ...prevState,
-          modalVisible: action.modalVisible,
-          productID: action.productID,
-          staffID: action.staffID,
-          location: action.location,
-          shopID: action.shopID,
-          maxQty: action.maxQty,
-        };
-      case 'SET_QUANTITY_FIELD':
-        return {
-          ...prevState,
-          quantity: action.quantity,
-        };
-      case 'TOGGLE_MODAL':
-        return {
-          ...prevState,
-          modalVisible: action.modalVisible,
-        };
-      default:
-        break;
-    }
-  };
-  const [state, dispatch] = React.useReducer(reducer, InitialState);
-  React.useEffect(() => {
-    dispatch({
-      type: 'SET_MODAL_INFO',
-      modalVisible: toggleStatus,
-      productID: productID,
-      staffID: staffID,
-      location: location,
-      shopID: shopID,
-      maxQty: maxQty,
-    });
-  }, [toggleStatus]);
+export function ModalCart() {
+  const loginState = React.useContext(LoginState);
+  const orderState = React.useContext(InventoryState);
+  const {toggleModal, onChangeRequestQuantity} =
+    React.useContext(InventoryMethod);
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={state.modalVisible}
-      onRequestClose={() => {
-        toggleModal(false);
-        dispatch({type: 'TOGGLE_MODAL', modalVisible: false});
-      }}>
+      visible={orderState.toggleModal}
+      onRequestClose={toggleModal}>
       <View style={styles.modalContainer}>
         <View
           style={{
@@ -106,13 +57,7 @@ export function ModalCart({
               size={25}
               color="red"
               style={{marginHorizontal: 5}}
-              onPress={() => {
-                toggleModal(false);
-                dispatch({
-                  type: 'TOGGLE_MODAL',
-                  modalVisible: !state.modalVisible,
-                });
-              }}
+              onPress={toggleModal}
             />
           </View>
           <View
@@ -141,19 +86,14 @@ export function ModalCart({
                 marginBottom: 10,
               }}>
               <Text style={{color: 'grey', fontSize: 18, fontWeight: 'bold'}}>
-                {state.location}-{state.shopID}
+                {loginState.location}-{loginState.shopID}
               </Text>
             </View>
             <NumericInput
-              maxValue={state.maxQty}
+              maxValue={6}
               minValue={1}
-              value={state.quantity}
-              onChange={value =>
-                dispatch({
-                  type: 'SET_QUANTITY_FIELD',
-                  quantity: value,
-                })
-              }
+              value={orderState.requestQuantity}
+              onChange={onChangeRequestQuantity}
               totalWidth={240}
               totalHeight={50}
               iconSize={25}
@@ -176,17 +116,13 @@ export function ModalCart({
                   currentDate.getDate();
                 const socket = io('http://172.104.44.182:3004/');
                 socket.emit('requestInventory', {
-                  shopID: state.shopID,
-                  staffID: state.staffID,
-                  productID: state.productID,
-                  quantity: state.quantity,
+                  shopID: loginState.shopID,
+                  staffID: loginState.staffID,
+                  productID: orderState.productID,
+                  quantity: orderState.requestQuantity,
                   requestDate: newDateFormat,
                 });
-                toggleModal(false);
-                dispatch({
-                  type: 'TOGGLE_MODAL',
-                  modalVisible: !state.modalVisible,
-                });
+                toggleModal();
               }}>
               <Text style={styles.modalText}>確認</Text>
             </TouchableOpacity>
