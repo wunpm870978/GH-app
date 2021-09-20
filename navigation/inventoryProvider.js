@@ -30,16 +30,19 @@ export const InventoryProvider = () => {
   };
   const reducer = (prevState, action) => {
     switch (action.type) {
+      //handle searching box
       case 'ON_CHANGE_QUERY':
         return {
           ...prevState,
           searchQuery: action.searchQuery,
         };
+      //deterine isLoading to be triggered
       case 'FETCHING_API':
         return {
           ...prevState,
           isLoading: action.isLoading,
         };
+      //set fields after getting info from backend
       case 'SET_PRODUCT_INFO':
         return {
           ...prevState,
@@ -54,11 +57,13 @@ export const InventoryProvider = () => {
           location: action.location,
           quantity: action.quantity,
         };
+      //toggle modal
       case 'TOGGLE_MODAL':
         return {
           ...prevState,
           toggleModal: !prevState.toggleModal,
         };
+      //sending request for changing inventory
       case 'SET_REQUEST_QUANTITY_FIELD':
         return {
           ...prevState,

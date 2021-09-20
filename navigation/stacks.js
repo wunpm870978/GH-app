@@ -3,6 +3,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {LoginScreen} from '../screens/Login.js';
+import {LoginShopScreen} from '../screens/LoginContinue.js';
 import {HomeScreen} from '../screens/Home.js';
 import {DiscountInfoScreen} from '../screens/discount/DiscountInfo.js';
 import {DiscountProductListScreen} from '../screens/discount/productsInDiscount.js';
@@ -12,24 +13,33 @@ import {CompanyNewsScreen} from '../screens/companyNews/CompanyNews.js';
 import {NewsContentScreen} from '../screens/companyNews/content.js';
 import {MallMainScreen} from '../screens/mall/filter.js';
 import {ProductListScreen} from '../screens/mall/productList.js';
+import {CreateMembershipScreen} from '../screens/membership/membership.js';
+
 import {OrderProvider} from './orderProvider.js';
 import {SalesProvider} from './salesProvider.js';
 import {InventoryProvider} from './inventoryProvider.js';
 
 const Stack = createStackNavigator();
-
+//Login
 export const LoginStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="SetShop"
+        component={LoginShopScreen}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
-
+//Home page主頁面
 export const HomeStackNavigator = () => {
   return (
     <Stack.Navigator
@@ -93,10 +103,15 @@ export const HomeStackNavigator = () => {
         component={CompanyNewsStackNavigator}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="Membership"
+        component={MembershipStackNavigator}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
-
+// Shop Mall商城
 export const MallStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="MainMall">
@@ -130,7 +145,7 @@ export const MallStackNavigator = () => {
     </Stack.Navigator>
   );
 };
-
+//Discount 優惠資訊
 export const DiscountStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="DiscountInfo">
@@ -165,7 +180,7 @@ export const DiscountStackNavigator = () => {
     </Stack.Navigator>
   );
 };
-
+//News 公司消息
 export const CompanyNewsStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="CompanyNews">
@@ -185,6 +200,24 @@ export const CompanyNewsStackNavigator = () => {
         component={NewsContentScreen}
         options={{
           title: '消息詳細',
+          headerStyle: {
+            backgroundColor: '#F4F5F8',
+          },
+          headerTintColor: '#EA5E2A',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+//創建會員
+export const MembershipStackNavigator = () => {
+  return (
+    <Stack.Navigator initialRouteName="Membership">
+      <Stack.Screen
+        name="CreateMember"
+        component={CreateMembershipScreen}
+        options={{
+          title: '創建會員',
           headerStyle: {
             backgroundColor: '#F4F5F8',
           },

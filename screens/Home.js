@@ -201,6 +201,7 @@ export function HomeScreen({route, navigation}) {
             style={styles.btn}
             onPress={() => {
               //navigation.popToTop()
+              Alert.alert('即將推出!');
             }}>
             <FontAwesome5
               name="pen-alt"
@@ -215,7 +216,7 @@ export function HomeScreen({route, navigation}) {
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
-              Alert.alert('即將推出!');
+              navigation.push('Membership');
             }}>
             <Ionicons
               name="md-person-add"

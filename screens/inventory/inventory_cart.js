@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable radix */
 
 import React from 'react';
 import {
@@ -13,7 +12,6 @@ import {
   Dimensions,
 } from 'react-native';
 import {Searchbar} from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../../style/inventory/inventory_cart_style.js';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';

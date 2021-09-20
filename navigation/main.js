@@ -12,10 +12,12 @@ export const Main = () => {
     isLoading: true,
     staffID: null,
     shopID: null,
+    shopPicker: [],
     position: null,
     location: null,
     district: null,
     token: null,
+    validLoginStatue: false,
   };
 
   const loginReducer = (prevState, action) => {
@@ -36,11 +38,17 @@ export const Main = () => {
           ...prevState,
           staffID: action.staffID,
           token: action.token,
-          shopID: action.shopID,
+          //shopID: action.shopID,
+          shopPicker: action.shopPicker,
           position: action.position,
-          location: action.location,
-          district: action.district,
+          //location: action.location,
+          //district: action.district,
           isLoading: false,
+        };
+      case 'VALID':
+        return {
+          ...prevState,
+          validLoginStatue: true,
         };
       case 'LOGOUT':
         return {
@@ -49,9 +57,11 @@ export const Main = () => {
           token: null,
           isLoading: false,
           shopID: null,
+          shopPicker: [],
           position: null,
           location: null,
           district: null,
+          validLoginStatue: false,
         };
       case 'REGISTER':
         return {
@@ -59,6 +69,13 @@ export const Main = () => {
           staffID: action.staffID,
           token: action.token,
           isLoading: false,
+        };
+      case 'SET_SHOPPICKER':
+        return {
+          ...prevState,
+          shopID: action.shopID,
+          location: action.location,
+          district: action.district,
         };
     }
   };
@@ -70,13 +87,13 @@ export const Main = () => {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async foundUser => {
+      signIn: async (foundUser, shopPicker) => {
         try {
           await AsyncStorage.setItem('staffID', foundUser[0].staffID);
           await AsyncStorage.setItem('userToken', foundUser[0].userToken);
-          await AsyncStorage.setItem('shop_id', foundUser[0].shop_id);
-          await AsyncStorage.setItem('location', foundUser[0].location);
-          await AsyncStorage.setItem('district', foundUser[0].district);
+          //await AsyncStorage.setItem('shop_id', foundUser[0].shop_id);
+          //await AsyncStorage.setItem('location', foundUser[0].location);
+          //await AsyncStorage.setItem('district', foundUser[0].district);
           await AsyncStorage.setItem('position', foundUser[0].position);
         } catch (e) {
           console.log(e);
@@ -86,9 +103,10 @@ export const Main = () => {
           type: 'LOGIN',
           staffID: foundUser[0].staffID,
           token: foundUser[0].userToken,
-          shopID: foundUser[0].shop_id,
-          location: foundUser[0].location,
-          district: foundUser[0].district,
+          shopPicker: shopPicker,
+          //shopID: foundUser[0].shop_id,
+          //location: foundUser[0].location,
+          //district: foundUser[0].district,
           position: foundUser[0].position,
         });
       },
@@ -104,6 +122,24 @@ export const Main = () => {
           console.log(e);
         }
         dispatch({type: 'LOGOUT'});
+      },
+      setShopPicker: async selectedPicker => {
+        try {
+          await AsyncStorage.setItem('shop_id', selectedPicker.shopID);
+          await AsyncStorage.setItem('location', selectedPicker.location);
+          await AsyncStorage.setItem('district', selectedPicker.district);
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({
+          type: 'SET_SHOPPICKER',
+          shopID: selectedPicker.shopID,
+          location: selectedPicker.location,
+          district: selectedPicker.district,
+        });
+      },
+      valid: async () => {
+        dispatch({type: 'VALID'});
       },
     }),
     [],
@@ -140,7 +176,7 @@ export const Main = () => {
     <LoginState.Provider value={loginState}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
-          {loginState.token !== null ? (
+          {loginState.validLoginStatue !== false ? (
             <HomeStackNavigator />
           ) : (
             <LoginStackNavigator />

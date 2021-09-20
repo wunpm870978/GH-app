@@ -14,7 +14,7 @@ import styles from '../style/login_style.js';
 import Anticon from 'react-native-vector-icons/AntDesign';
 import Micon from 'react-native-vector-icons/MaterialIcons';
 import {AuthContext} from '../api/authText.js';
-import {apiLoginHandle} from '../api/login.js';
+import {apiLoginHandle, apiShopPicker} from '../api/login.js';
 import {MyStatusBar} from '../style/StatusBar.js';
 
 export function LoginScreen({navigation}) {
@@ -38,11 +38,17 @@ export function LoginScreen({navigation}) {
       return;
     } else {
       const [status, result] = await apiLoginHandle(username, password);
-      if (status !== 200 || result.hasOwnProperty('error')) {
+      const [statusSP, resultSP] = await apiShopPicker(username, password);
+      if (
+        status !== 200 ||
+        statusSP !== 200 ||
+        result.hasOwnProperty('error')
+      ) {
         Alert.alert('非有效用戶', '使用者名稱或密碼錯誤', [{text: 'OK'}]);
         handlePasswordChange('');
       } else {
-        signIn(result);
+        signIn(result, resultSP);
+        navigation.replace('SetShop');
       }
     }
   };

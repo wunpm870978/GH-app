@@ -35,6 +35,7 @@ export const OrderProvider = () => {
   };
   const reducer = (prevState, action) => {
     switch (action.type) {
+      //handle membership field
       case 'SCAN_QR_CODE':
         return {
           ...prevState,
@@ -57,21 +58,19 @@ export const OrderProvider = () => {
           ...prevState,
           memberID: action.memberID,
         };
+      //set promotion picker after getting info from backend
       case 'SET_PROMOTION_PICKER':
         return {
           ...prevState,
           promotionPickerList: action.promotionPickerList,
         };
+      //handle changes of promotion picker
       case 'SELECT_PROMOTION_PICKER':
         return {
           ...prevState,
           promotionCode: action.promotionCode,
         };
-      case 'GET_STAFF_INFO':
-        return {
-          ...prevState,
-          staffData: action.staffData,
-        };
+      //handle adding product to carts
       case 'ADD_TO_CART':
         return {
           ...prevState,
@@ -84,12 +83,14 @@ export const OrderProvider = () => {
           productList: action.productList,
           totalPrice: action.totalPrice,
         };
+      //handle payment field
       case 'SET_PAYMENT_METHOD':
         return {
           ...prevState,
           paymentMethod: action.paymentMethod,
           isSelectPayment: true,
         };
+      //handle discount field
       case 'SET_DISCOUNT_TYPE':
         return {
           ...prevState,
@@ -102,6 +103,7 @@ export const OrderProvider = () => {
           ...prevState,
           promotionCode: action.promotionCode,
         };
+      //reset varaible after submit
       case 'RESET_PAYMENT_SELECT':
         return {
           ...prevState,
@@ -112,6 +114,7 @@ export const OrderProvider = () => {
           ...prevState,
           isSelectDiscountCode: false,
         };
+      //set variables after getting info from backend
       case 'SET_FIELDS_AFTER_CALCULATION':
         return {
           ...prevState,
@@ -120,11 +123,13 @@ export const OrderProvider = () => {
           freeProductList: action.freeProductList,
           detail: action.detail,
         };
+      //toggle panel in payament.js
       case 'TOGGLE_PAYMENT_PANEL':
         return {
           ...prevState,
           togglePanel: action.togglePanel,
         };
+      //handle launch camera or gallary
       case 'LAUNCH_CAMERA':
         return {
           ...prevState,
@@ -219,6 +224,7 @@ export const OrderProvider = () => {
       toggleDiscountErrorMsg: () => {
         dispatch({type: 'RESET_DISCOUNT_SELECT'});
       },
+      //---------------------payment.js-----------------------//
       //handle discount calculations
       getResultFromCalculation: result => {
         dispatch({
